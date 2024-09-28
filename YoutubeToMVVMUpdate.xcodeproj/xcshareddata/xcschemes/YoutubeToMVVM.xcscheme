@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5CC1D8322C539F5A003448FE"
-               BuildableName = "YoutubeToMVVM.app"
-               BlueprintName = "YoutubeToMVVM"
-               ReferencedContainer = "container:YoutubeToMVVM.xcodeproj">
+               BuildableName = "YoutubeToMVVMUpdate.app"
+               BlueprintName = "YoutubeToMVVMUpdate"
+               ReferencedContainer = "container:YoutubeToMVVMUpdate.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5CC1D8322C539F5A003448FE"
-            BuildableName = "YoutubeToMVVM.app"
-            BlueprintName = "YoutubeToMVVM"
-            ReferencedContainer = "container:YoutubeToMVVM.xcodeproj">
+            BuildableName = "YoutubeToMVVMUpdate.app"
+            BlueprintName = "YoutubeToMVVMUpdate"
+            ReferencedContainer = "container:YoutubeToMVVMUpdate.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5CC1D8322C539F5A003448FE"
-            BuildableName = "YoutubeToMVVM.app"
-            BlueprintName = "YoutubeToMVVM"
-            ReferencedContainer = "container:YoutubeToMVVM.xcodeproj">
+            BuildableName = "YoutubeToMVVMUpdate.app"
+            BlueprintName = "YoutubeToMVVMUpdate"
+            ReferencedContainer = "container:YoutubeToMVVMUpdate.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
