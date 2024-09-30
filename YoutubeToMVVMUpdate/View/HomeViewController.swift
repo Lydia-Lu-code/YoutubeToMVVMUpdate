@@ -6,18 +6,8 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     func didTapFirstButton() {
         print("第一個按鈕被點擊")
     }
-    
-    private let apiService: APIService
-    
-    var shortsVideoModels: [VideoModel] = []
-    var singleVideoModel: VideoModel?
-    var otherVideoModels: [VideoModel] = []
-    
-    var videoModelsDidUpdate: (() -> Void)?
-    
-    private var shortsVideoViewModel: VideoViewModel?
-    private var videoViewModel: VideoViewModel?
-    
+
+    private let viewModel: HomeViewModel
     private var singleVideoView = VideoView()
     private var otherVideoViews: [VideoView] = []
     private var shortsViewCell: ShortsViewCell = ShortsViewCell(frame: .zero)
@@ -32,122 +22,82 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let viewModel: HomeViewModel
-    
-    init() {
-            self.apiService = APIService()
-            self.viewModel = HomeViewModel(apiService: self.apiService)
-            super.init(nibName: nil, bundle: nil)
-            commonInit()
-        }
-    
-    init(viewModel: HomeViewModel) {
-        self.apiService = APIService()
-        self.viewModel = HomeViewModel(apiService: self.apiService)
+    init(viewModel: HomeViewModel = HomeViewModel()) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-        
-        required init?(coder: NSCoder) {
-            self.apiService = APIService()
-            self.viewModel = HomeViewModel(apiService: self.apiService)
-            super.init(coder: coder)
-            commonInit()
-        }
-        
-        private func commonInit() {
-            // 在這裡初始化其他屬性
-            shortsVideoViewModel = VideoViewModel()
-            videoViewModel = VideoViewModel()
-            // ... 初始化其他必要的屬性 ...
-        }
     
-
+    required init?(coder: NSCoder) {
+        self.viewModel = HomeViewModel()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupUI()
         setupBindings()
         viewModel.loadVideos()
-
-        setupNavButtonItems()
-        setupNavButtons()
-        setupScrollView()
-        setupView()
-        
-        buttonCollectionCell.delegate = self
-        
-        if shortsVideoViewModel == nil {
-            shortsVideoViewModel = VideoViewModel()
-        }
-        
-        setupBindings()
-
-        setupNavButtons()
-        
-        shortsVideoViewModel?.loadVideos(query: "YEONJUN Shorts", maxResults: 4, viewControllerType: .home)
-        videoViewModel?.loadVideos(query: "TXT TODO EP.", maxResults: 5, viewControllerType: .home)
-        
-        
         contentView.layoutIfNeeded()
         
         let totalHeight = contentView.frame.height
         print("可滑動畫面的總高度: \(totalHeight)")
-        
-        viewModel.loadVideos()
-    }
-
-    private func setupBindings() {
-        viewModel.onShortsVideosUpdated = { [weak self] in
-            DispatchQueue.main.async {
-                self?.updateShortsUI()
-            }
-        }
-        
-        viewModel.onSingleVideoUpdated = { [weak self] in
-            DispatchQueue.main.async {
-                self?.updateSingleVideoUI()
-            }
-        }
-        
-        viewModel.onOtherVideosUpdated = { [weak self] in
-            DispatchQueue.main.async {
-                self?.updateOtherVideosUI()
-            }
-        }
     }
     
-    private func updateShortsUI() {
-        shortsViewCell.videoContents = viewModel.shortsVideoDetailViewModels.map { viewModel in
-            VideoModel(title: viewModel.title,
-                       thumbnailURL: viewModel.thumbnailURL?.absoluteString ?? "",
-                       channelTitle: viewModel.channelTitle,
-                       videoID: viewModel.videoModel.videoID,
-                       accountImageURL: viewModel.accountImageURL?.absoluteString)
-        }
-        shortsViewCell.reloadData()
-    }
+    private func setupBindings() {
+        viewModel.shortsVideos.bind { [weak self] videos in
+            DispatchQueue.main.async {
+//                self?.shortsViewCell.videoContents = videos.map { $0.toVideoModel() }
+                self?.shortsViewCell.viewModel = ShortsViewCellViewModel(videoContents: videos.map { $0.toVideoModel() })
 
-    private func updateSingleVideoUI() {
-        if let viewModel = viewModel.singleVideoDetailViewModel {
-            singleVideoView.videoModel = VideoModel(title: viewModel.title,
-                                                    thumbnailURL: viewModel.thumbnailURL?.absoluteString ?? "",
-                                                    channelTitle: viewModel.channelTitle,
-                                                    videoID: viewModel.videoModel.videoID,
-                                                    accountImageURL: viewModel.accountImageURL?.absoluteString)
-        }
-    }
-
-    private func updateOtherVideosUI() {
-        for (index, videoView) in otherVideoViews.enumerated() {
-            if index < viewModel.otherVideoDetailViewModels.count {
-                let viewModel = viewModel.otherVideoDetailViewModels[index]
-                videoView.videoModel = VideoModel(title: viewModel.title,
-                                                  thumbnailURL: viewModel.thumbnailURL?.absoluteString ?? "",
-                                                  channelTitle: viewModel.channelTitle,
-                                                  videoID: viewModel.videoModel.videoID,
-                                                  accountImageURL: viewModel.accountImageURL?.absoluteString)
             }
         }
+        
+        viewModel.singleVideo.bind { [weak self] video in
+            DispatchQueue.main.async {
+                if let singleVideo = video as? VideoViewModel {
+                    self?.singleVideoView.videoModel = singleVideo.toVideoModel()
+                } else if let videoArray = video as? [VideoViewModel], let firstVideo = videoArray.first {
+                    self?.singleVideoView.videoModel = firstVideo.toVideoModel()
+                } else {
+                    // 處理空值或未知類型的情況
+                    self?.singleVideoView.videoModel = nil
+                }
+            }
+        }
+        
+        viewModel.otherVideos.bind { [weak self] videos in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                for (index, videoView) in self.otherVideoViews.enumerated() {
+                    if index < videos.count {
+                        videoView.videoModel = videos[index].toVideoModel()
+                    }
+                }
+            }
+        }
+          
+          viewModel.errorMessage.bind { [weak self] error in
+              if let error = error {
+                  DispatchQueue.main.async {
+                      self?.showError(error)
+                  }
+              }
+          }
+      }
+      
+      private func showError(_ error: String) {
+          let alert = UIAlertController(title: "錯誤", message: error, preferredStyle: .alert)
+          alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
+          present(alert, animated: true, completion: nil)
+      }
+    
+    private func setupUI() {
+        setupNavButtonItems()
+        setupNavButtons()
+        setupScrollView()
+        setupView()
+        buttonCollectionCell.delegate = self
     }
 
     private func setupScrollView() {

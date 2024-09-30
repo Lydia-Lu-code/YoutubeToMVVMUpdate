@@ -10,8 +10,8 @@ import UIKit
 class ContentTableViewController: UITableViewController {
     
     var navButtonItems: NavButtonItems!
-    var conViewModel1 = VideoViewModel()
-    var conViewModel2 = VideoViewModel()
+//    var conViewModel1 = VideoListViewModel()
+//    var conViewModel2 = VideoListViewModel()
     
     lazy var contentTopView: ContentTopView = {
         let view = ContentTopView()
@@ -27,14 +27,14 @@ class ContentTableViewController: UITableViewController {
         tableView.estimatedSectionHeaderHeight = 0
         tableView.sectionHeaderTopPadding = 0
         
-        // 設置 dataLoadedCallback
-        conViewModel1.dataLoadedCallback = { [weak self] in
-            self?.tableView.reloadData()
-        }
-        
-        conViewModel2.dataLoadedCallback = { [weak self] in
-            self?.tableView.reloadData()
-        }
+//        // 設置 dataLoadedCallback
+//        conViewModel1.dataLoadedCallback = { [weak self] in
+//            self?.tableView.reloadData()
+//        }
+//        
+//        conViewModel2.dataLoadedCallback = { [weak self] in
+//            self?.tableView.reloadData()
+//        }
         
 //        conViewModel1.loadShortsCell(withQuery: "2024 韓 團綜", for: .content)
 //        conViewModel2.loadShortsCell(withQuery: "2023 年末舞台", for: .content)
@@ -94,17 +94,17 @@ class ContentTableViewController: UITableViewController {
             return UITableViewCell()
         }
         
-        if indexPath.section == 1 {
-            if conViewModel1.data.value.count > 0 {
-                let items = Array(conViewModel1.data.value.prefix(16))
-                cell.configure(with: items)
-            }
-        } else if indexPath.section == 2 {
-            if conViewModel2.data.value.count > 0 {
-                let items = Array(conViewModel2.data.value.prefix(16))
-                cell.configure(with: items)
-            }
-        }
+//        if indexPath.section == 1 {
+//            if conViewModel1.data.value.count > 0 {
+//                let items = Array(conViewModel1.data.value.prefix(16))
+//                cell.configure(with: items)
+//            }
+//        } else if indexPath.section == 2 {
+//            if conViewModel2.data.value.count > 0 {
+//                let items = Array(conViewModel2.data.value.prefix(16))
+//                cell.configure(with: items)
+//            }
+//        }
         return cell
     }
     

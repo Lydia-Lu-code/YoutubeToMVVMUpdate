@@ -27,7 +27,7 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var data: Observable<[VideoModel]> = Observable([])  // 明確指定型別並初始化為空陣列
     var dataLoadedCallback: (([VideoModel]) -> Void)?
     var singleVideoView = VideoView()
-    var videoViewModel = VideoViewModel()
+//    var videoViewModel = VideoListViewModel()
     
     
     let playerView: WKWebView = {

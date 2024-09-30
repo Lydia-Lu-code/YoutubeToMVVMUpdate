@@ -6,6 +6,12 @@ class ShortsViewCell: UICollectionViewCell {
     
     private var collectionView: UICollectionView!
     
+    var viewModel: ShortsViewCellViewModel? {
+        didSet {
+            updateUI()
+        }
+    }
+    
     var videoContents: [VideoModel] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -36,32 +42,37 @@ class ShortsViewCell: UICollectionViewCell {
         collectionView.register(ShortsCollectionViewCell.self, forCellWithReuseIdentifier: ShortsCollectionViewCell.cellIdentifier)
         
         contentView.addSubview(collectionView)
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-//        ])
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+         ])
+
+    }
+    
+    private func updateUI() {
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
 }
 
 extension ShortsViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videoContents.count
+        return viewModel?.numberOfItems ?? 0
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortsCollectionViewCell.cellIdentifier, for: indexPath) as? ShortsCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortsCollectionViewCell.cellIdentifier, for: indexPath) as? ShortsCollectionViewCell,
+              let videoContent = viewModel?.videoContent(at: indexPath.item) else {
             fatalError("無法取得 ShortsCollectionViewCell")
         }
         
-        let videoContent = videoContents[indexPath.item]
-        cell.titleLabel.text = videoContent.title
-        if let url = URL(string: videoContent.thumbnailURL) {
-            cell.setImage(from: url)
-        }
+        cell.configure(with: videoContent)
         return cell
     }
     

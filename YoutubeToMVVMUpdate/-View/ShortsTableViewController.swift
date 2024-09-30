@@ -4,7 +4,7 @@ import WebKit
 
 class ShortsTableViewController: UITableViewController {
     
-    var videoViewModel: VideoViewModel?
+//    var videoViewModel: VideoListViewModel?
     var videoContents: [VideoModel] = []
     var lastContentOffset: CGFloat = 0
     
@@ -22,23 +22,23 @@ class ShortsTableViewController: UITableViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         
         // 初始化 videoViewModel
-        videoViewModel = VideoViewModel()
+//        videoViewModel = VideoListViewModel()
         
-        // 設置數據加載回調
-        videoViewModel?.dataLoadedCallback = { [weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.videoContents = self.videoViewModel?.data.value ?? []
-                self.tableView.reloadData()
-                
-                // 確保在數據加載後進行初始對齊
-                self.snapToNextCell()
-                self.tableView.rowHeight = UIScreen.main.bounds.height
-            }
-        }
+//        // 設置數據加載回調
+//        videoViewModel?.dataLoadedCallback = { [weak self] in
+//            guard let self = self else { return }
+//            DispatchQueue.main.async {
+//                self.videoContents = self.videoViewModel?.data.value ?? []
+//                self.tableView.reloadData()
+//                
+//                // 確保在數據加載後進行初始對齊
+//                self.snapToNextCell()
+//                self.tableView.rowHeight = UIScreen.main.bounds.height
+//            }
+//        }
         
         // 加載 shorts cell 的數據
-        videoViewModel?.loadVideos(query: "IVE, NewJeans, shorts", maxResults: 20, viewControllerType: .shorts)
+//        videoViewModel?.loadVideos(query: "IVE, NewJeans, shorts", maxResults: 20, viewControllerType: .shorts)
 
         // 設置 tabBar 的背景顏色
         updateTabBarAppearance()
