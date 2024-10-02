@@ -5,7 +5,7 @@ import WebKit
 class ShortsTableViewController: UITableViewController {
     
 //    var videoViewModel: VideoListViewModel?
-    var videoContents: [VideoModel] = []
+    var videoContents: [HomeVideoModel] = []
     var lastContentOffset: CGFloat = 0
     
     override func viewDidLoad() {

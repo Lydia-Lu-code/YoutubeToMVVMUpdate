@@ -2,12 +2,11 @@
 import Foundation
 import UIKit
 
-
-class VideoViewModel {
-    let videoModel: VideoModel
+class HomeVideoViewModel {
+    let videoModel: HomeVideoModel
     
     // 初始化方法，傳入 VideoModel
-    init(videoModel: VideoModel) {
+    init(videoModel: HomeVideoModel) {
         self.videoModel = videoModel
     }
     
@@ -41,6 +40,20 @@ class VideoViewModel {
         return URL(string: videoModel.accountImageURL ?? "")
     }
     
+    
+    var videoID: String {
+        return videoModel.videoID
+    }
+    
+    var viewCount: String? {
+        return videoModel.viewCount
+    }
+    
+    var daysSinceUpload: String? {
+        return videoModel.daysSinceUpload
+    }
+    
+    
     // 影片嵌入 HTML
     var videoEmbedHTML: String {
         let videoID = videoModel.videoID
@@ -54,6 +67,7 @@ class VideoViewModel {
         """
     }
     
+
     // 轉換觀看次數
     private func convertViewCount(_ viewCountString: String) -> String {
         guard let viewCount = Int(viewCountString) else {
@@ -91,5 +105,19 @@ class VideoViewModel {
             }
         }
         return ""
+    }
+}
+
+extension HomeVideoViewModel {
+    func toVideoModel() -> HomeVideoModel {
+        return HomeVideoModel(
+            title: self.title,
+            thumbnailURL: self.thumbnailURL?.absoluteString ?? "",
+            channelTitle: self.channelTitle,
+            videoID: self.videoID,
+            viewCount: self.viewCount,
+            daysSinceUpload: self.daysSinceUpload,
+            accountImageURL: self.accountImageURL?.absoluteString
+        )
     }
 }
