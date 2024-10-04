@@ -1,68 +1,136 @@
-//
-//  ShortsViewModel.swift
-//  YoutubeToMVVMUpdate
-//
-//  Created by Lydia Lu on 2024/10/2.
-//
-
 import Foundation
 
 class ShortsListViewModel {
-    var videoContents: [ShortsVideoModel] = []
-    var dataLoadedCallback: (() -> Void)?
+    private var videoContents: [ShortsVideoModel] = []
+    private let apiService: APIService
     
-    func loadVideos(query: String, maxResults: Int) {
-        // 這裡應該實現實際的網絡請求來獲取視頻數據
-        // 為了示範，我們使用 URLSession 來模擬網絡請求
-        let urlString = "https://api.example.com/shorts?query=\(query)&maxResults=\(maxResults)"
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL")
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else { return }
-            
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-            
-            do {
-                // 假設 API 返回的數據結構與 ShortsVideoModel 匹配
-                let decodedData = try JSONDecoder().decode([ShortsVideoModel].self, from: data)
-                self.videoContents = decodedData
-                
-                DispatchQueue.main.async {
-                    self.dataLoadedCallback?()
-                }
-            } catch {
-                print("Decoding error: \(error.localizedDescription)")
-            }
-        }.resume()
+    var onDataLoaded: (() -> Void)?
+    var onError: ((String) -> Void)?
+    
+    private let emojiBtnTitles = ["Like", "Dislike", "Comments", "Share", "Remix", "More"]
+    private let emojiBtnSymbols = ["hand.thumbsup.fill", "hand.thumbsdown.fill", "text.bubble.fill", "arrowshape.turn.up.right.fill", "music.note", "ellipsis"]
+    
+    init(apiService: APIService = APIService()) {
+        self.apiService = apiService
     }
     
+    func loadVideos(query: String, maxResults: Int) {
+        apiService.fetchShortsVideos(query: query, maxResults: maxResults) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let videos):
+                self.videoContents = videos.map { video in
+                    var updatedVideo = video
+                    updatedVideo.thumbnailURL = self.getHighResolutionThumbnail(video.thumbnailURL)
+                    print("Updated thumbnail URL: \(updatedVideo.thumbnailURL)")
+                    return updatedVideo
+                }
+                DispatchQueue.main.async {
+                    self.onDataLoaded?()
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.onError?(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    
+    private func getHighResolutionThumbnail(_ url: String) -> String {
+        // First, check if the URL already contains a high-resolution identifier
+        if url.contains("hqdefault") || url.contains("maxresdefault") {
+            return url
+        }
+        // If not, try to create a high-resolution URL
+        let highResURL = url.replacingOccurrences(of: "default.jpg", with: "maxresdefault.jpg")
+        print("Original URL: \(url)")
+        print("High-res URL: \(highResURL)")
+        return highResURL
+    }
+    
+    func numberOfVideos() -> Int {
+        return videoContents.count
+    }
+    
+    func cellViewModel(at index: Int) -> ShortsCellViewModel? {
+        guard index < videoContents.count else { return nil }
+        let video = videoContents[index]
+        return ShortsCellViewModel(video: video, emojiBtnTitles: emojiBtnTitles, emojiBtnSymbols: emojiBtnSymbols)
+    }
+}
+
+struct ShortsCellViewModel {
+    let video: ShortsVideoModel
+    let emojiBtnTitles: [String]
+    let emojiBtnSymbols: [String]
+}
+
+
+//import Foundation
+//
+//class ShortsListViewModel {
+//    private var videoContents: [ShortsVideoModel] = []
+//    private let apiService: APIService
+//    
+//    var onDataLoaded: (() -> Void)?
+//    var onError: ((String) -> Void)?
+//    
+//    private let emojiBtnTitles = ["Like", "Dislike", "Comments", "Share", "Remix", "More"]
+//    private let emojiBtnSymbols = ["hand.thumbsup.fill", "hand.thumbsdown.fill", "text.bubble.fill", "arrowshape.turn.up.right.fill", "music.note", "ellipsis"]
+//    
+//    init(apiService: APIService = APIService()) {
+//        self.apiService = apiService
+//    }
+//    
 //    func loadVideos(query: String, maxResults: Int) {
-//        // 這裡你應該實現實際的網絡請求來獲取視頻數據
-//        // 現在，我們會使用一個模擬實現
-//        DispatchQueue.global().async {
-//            // 模擬網絡延遲
-//            Thread.sleep(forTimeInterval: 2)
-//            
-//            // 模擬數據
-//            self.videoContents = [
-//                ShortsVideoModel(id: "1", title: "IVE 短片", channelTitle: "IVE 官方", thumbnailURL: "https://example.com/ive.jpg"),
-//                ShortsVideoModel(id: "2", title: "NewJeans 舞蹈", channelTitle: "NewJeans 官方", thumbnailURL: "https://example.com/newjeans.jpg")
-//            ]
-//            
-//            DispatchQueue.main.async {
-//                self.dataLoadedCallback?()
+//        apiService.fetchShortsVideos(query: query, maxResults: maxResults) { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let videos):
+//                self.videoContents = videos.map { video in
+//                    var updatedVideo = video
+//                    updatedVideo.thumbnailURL = self.getHighResolutionThumbnail(video.thumbnailURL)
+//                    print("Updated thumbnail URL: \(updatedVideo.thumbnailURL)")
+//                    return updatedVideo
+//                }
+//                DispatchQueue.main.async {
+//                    self.onDataLoaded?()
+//                }
+//            case .failure(let error):
+//                DispatchQueue.main.async {
+//                    self.onError?(error.localizedDescription)
+//                }
 //            }
 //        }
 //    }
-}
+//    
+//    
+//    private func getHighResolutionThumbnail(_ url: String) -> String {
+//        // First, check if the URL already contains a high-resolution identifier
+//        if url.contains("hqdefault") || url.contains("maxresdefault") {
+//            return url
+//        }
+//        // If not, try to create a high-resolution URL
+//        let highResURL = url.replacingOccurrences(of: "default.jpg", with: "maxresdefault.jpg")
+//        print("Original URL: \(url)")
+//        print("High-res URL: \(highResURL)")
+//        return highResURL
+//    }
+//    
+//    func numberOfVideos() -> Int {
+//        return videoContents.count
+//    }
+//    
+//    func cellViewModel(at index: Int) -> ShortsCellViewModel? {
+//        guard index < videoContents.count else { return nil }
+//        let video = videoContents[index]
+//        return ShortsCellViewModel(video: video, emojiBtnTitles: emojiBtnTitles, emojiBtnSymbols: emojiBtnSymbols)
+//    }
+//}
+//
+//struct ShortsCellViewModel {
+//    let video: ShortsVideoModel
+//    let emojiBtnTitles: [String]
+//    let emojiBtnSymbols: [String]
+//}

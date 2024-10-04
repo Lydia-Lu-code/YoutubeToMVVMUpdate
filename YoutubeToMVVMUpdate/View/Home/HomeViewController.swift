@@ -47,7 +47,6 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     private func setupBindings() {
         viewModel.shortsVideos.bind { [weak self] videos in
             DispatchQueue.main.async {
-//                self?.shortsViewCell.videoContents = videos.map { $0.toVideoModel() }
                 self?.shortsViewCell.viewModel = ShortsViewCellViewModel(videoContents: videos.map { $0.toVideoModel() })
 
             }
@@ -55,9 +54,9 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         
         viewModel.singleVideo.bind { [weak self] video in
             DispatchQueue.main.async {
-                if let singleVideo = video as? VideoViewModel {
+                if let singleVideo = video {
                     self?.singleVideoView.videoModel = singleVideo.toVideoModel()
-                } else if let videoArray = video as? [VideoViewModel], let firstVideo = videoArray.first {
+                } else if let videoArray = video as? [HomeVideoViewModel], let firstVideo = videoArray.first {
                     self?.singleVideoView.videoModel = firstVideo.toVideoModel()
                 } else {
                     // 處理空值或未知類型的情況
@@ -252,3 +251,88 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     }
 }
 
+
+//import UIKit
+//import Foundation
+//
+//class HomeViewController: BaseViewController {
+//    
+//    private var shortsViewCell: ShortsViewCell = ShortsViewCell(frame: .zero)
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        //        setupShortsView()
+//        setupShortsViewCell()
+//    }
+//    
+//    override func setupBindings() {
+//        super.setupBindings()
+//        
+//        viewModel.shortsVideos.bind { [weak self] videos in
+//            DispatchQueue.main.async {
+//                self?.shortsViewCell.viewModel = ShortsViewCellViewModel(videoContents: videos.map { $0.toVideoModel() })
+//            }
+//        }
+//    }
+//    
+//    override func setupAdditionalViews() {
+//        super.setupAdditionalViews()
+//        
+//        contentView.addSubview(shortsViewCell)
+//        shortsViewCell.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        NSLayoutConstraint.activate([
+//            shortsViewCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            shortsViewCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            shortsViewCell.topAnchor.constraint(equalTo: singleVideoView.bottomAnchor),
+//            shortsViewCell.heightAnchor.constraint(equalToConstant: 670),
+//            
+//            otherVideoViews[0].topAnchor.constraint(equalTo: shortsViewCell.bottomAnchor)
+//        ])
+//    }
+//    
+//    private func setupShortsViewCell() {
+//        // 在這裡設置 ShortsViewCell 的其他屬性或行為
+//        // 例如: 設置 delegate, dataSource 等
+//    }
+//}
+//
+////import UIKit
+////import Foundation
+////
+////class HomeViewController: BaseViewController {
+////    
+////    private var shortsViewCell: ShortsViewCell = ShortsViewCell(frame: .zero)
+////    
+////    override func viewDidLoad() {
+////        super.viewDidLoad()
+////        setupShortsView()
+////    }
+////    
+////    override func setupBindings() {
+////        super.setupBindings()
+////        
+////        viewModel.shortsVideos.bind { [weak self] videos in
+////            DispatchQueue.main.async {
+////                self?.shortsViewCell.viewModel = ShortsViewCellViewModel(videoContents: videos.map { $0.toVideoModel() })
+////            }
+////        }
+////    }
+////    
+////    private func setupShortsView() {
+////        contentView.addSubview(shortsViewCell)
+////        shortsViewCell.translatesAutoresizingMaskIntoConstraints = false
+////        
+////        NSLayoutConstraint.activate([
+////            shortsViewCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+////            shortsViewCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+////            shortsViewCell.topAnchor.constraint(equalTo: singleVideoView.bottomAnchor),
+////            shortsViewCell.heightAnchor.constraint(equalToConstant: 670)
+////        ])
+////        
+////        // 調整其他視圖的約束
+////        NSLayoutConstraint.activate([
+////            otherVideoViews[0].topAnchor.constraint(equalTo: shortsViewCell.bottomAnchor)
+////        ])
+////    }
+////}

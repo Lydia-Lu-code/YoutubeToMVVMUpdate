@@ -4,7 +4,7 @@ import WebKit
 class VideoView: UIView {
     
     // 新增 videoModel 屬性
-    var videoModel: VideoModel? {
+    var videoModel: HomeVideoModel? {
         didSet {
             updateView() // 當 videoModel 更新時，更新視圖
         }

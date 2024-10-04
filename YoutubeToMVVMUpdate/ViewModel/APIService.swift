@@ -29,9 +29,10 @@ extension APIError: LocalizedError {
 
 class APIService {
     
+//    private let apiKey = ""
     private let apiKey = "AIzaSyDUC57C1L1XO0N7Y6Zh0oLgzk8PnrB3jWo"
     
-    func fetchVideos(query: String, maxResults: Int, completion: @escaping (Result<[VideoModel], APIError>) -> Void) {
+    func fetchVideos(query: String, maxResults: Int, completion: @escaping (Result<[HomeVideoModel], APIError>) -> Void) {
         let baseURL = "https://www.googleapis.com/youtube/v3/search"
         
         var components = URLComponents(string: baseURL)!
@@ -87,7 +88,7 @@ class APIService {
                 print("JSON decoding successful")
                 
                 let videoModels = decodedResponse.items.map { item in
-                    VideoModel(
+                    HomeVideoModel(
                         title: item.snippet.title,
                         thumbnailURL: item.snippet.thumbnails.high.url,
                         channelTitle: item.snippet.channelTitle,
@@ -99,6 +100,57 @@ class APIService {
                 completion(.success(videoModels))
             } catch {
                 print("JSON decoding error: \(error)")
+                completion(.failure(.decodingError(error)))
+            }
+        }.resume()
+    }
+    
+    func fetchShortsVideos(query: String, maxResults: Int, completion: @escaping (Result<[ShortsVideoModel], APIError>) -> Void) {
+        let baseURL = "https://www.googleapis.com/youtube/v3/search"
+        
+        var components = URLComponents(string: baseURL)!
+        components.queryItems = [
+            URLQueryItem(name: "part", value: "snippet"),
+            URLQueryItem(name: "q", value: query),
+            URLQueryItem(name: "type", value: "video"),
+            URLQueryItem(name: "videoDuration", value: "short"), // 指定短視頻
+            URLQueryItem(name: "maxResults", value: "\(maxResults)"),
+            URLQueryItem(name: "key", value: apiKey)
+        ]
+        
+        guard let url = components.url else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(.networkError(error)))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(.httpError((response as? HTTPURLResponse)?.statusCode ?? 0)))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            do {
+                let decodedResponse = try JSONDecoder().decode(SearchResponse.self, from: data)
+                let shortsModels = decodedResponse.items.map { item in
+                    ShortsVideoModel(
+                        id: item.id.videoID,
+                        title: item.snippet.title,
+                        channelTitle: item.snippet.channelTitle,
+                        thumbnailURL: item.snippet.thumbnails.high.url
+                    )
+                }
+                completion(.success(shortsModels))
+            } catch {
                 completion(.failure(.decodingError(error)))
             }
         }.resume()

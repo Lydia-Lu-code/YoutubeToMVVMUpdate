@@ -91,7 +91,7 @@ class ShortsCollectionViewCell: UICollectionViewCell {
 }
 
 extension ShortsCollectionViewCell {
-    func configure(with videoContent: VideoModel) {
+    func configure(with videoContent: HomeVideoModel) {
         titleLabel.text = videoContent.title
         if let url = URL(string: videoContent.thumbnailURL) {
             setImage(from: url)

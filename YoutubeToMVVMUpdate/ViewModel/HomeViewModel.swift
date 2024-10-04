@@ -3,15 +3,12 @@ import Foundation
 class HomeViewModel {
     private let apiService: APIService
     
-    var shortsVideoDetailViewModels: [VideoDetailViewModell] = []
-    var singleVideoDetailViewModel: VideoDetailViewModell?
-    var otherVideoDetailViewModels: [VideoDetailViewModell] = []
+    var shortsVideos: Observable<[HomeVideoViewModel]> = Observable([])
+    var singleVideo: Observable<HomeVideoViewModel?> = Observable(nil)
+    var otherVideos: Observable<[HomeVideoViewModel]> = Observable([])
+    var errorMessage: Observable<String?> = Observable(nil)
     
-    var onShortsVideosUpdated: (() -> Void)?
-    var onSingleVideoUpdated: (() -> Void)?
-    var onOtherVideosUpdated: (() -> Void)?
-    
-    init(apiService: APIService) {
+    init(apiService: APIService = APIService()) {
         self.apiService = apiService
     }
     
@@ -23,13 +20,7 @@ class HomeViewModel {
     
     private func loadShortsVideos() {
         apiService.fetchVideos(query: "YEONJUN Shorts", maxResults: 4) { [weak self] result in
-            switch result {
-            case .success(let videos):
-                self?.shortsVideoDetailViewModels = videos.map { VideoDetailViewModell(videoModel: $0) }
-                self?.onShortsVideosUpdated?()
-            case .failure(let error):
-                print("Error loading shorts videos: \(error)")
-            }
+            self?.handleResult(result, for: \.shortsVideos)
         }
     }
     
@@ -37,25 +28,30 @@ class HomeViewModel {
         apiService.fetchVideos(query: "TXT TODO EP.", maxResults: 1) { [weak self] result in
             switch result {
             case .success(let videos):
-                if let video = videos.first {
-                    self?.singleVideoDetailViewModel = VideoDetailViewModell(videoModel: video)
-                    self?.onSingleVideoUpdated?()
+                if let firstVideo = videos.first {
+                    self?.singleVideo.value = HomeVideoViewModel(videoModel: firstVideo)
                 }
             case .failure(let error):
-                print("Error loading single video: \(error)")
+                self?.errorMessage.value = error.localizedDescription
             }
         }
     }
     
     private func loadOtherVideos() {
         apiService.fetchVideos(query: "TXT T:Time", maxResults: 5) { [weak self] result in
-            switch result {
-            case .success(let videos):
-                self?.otherVideoDetailViewModels = videos.map { VideoDetailViewModell(videoModel: $0) }
-                self?.onOtherVideosUpdated?()
-            case .failure(let error):
-                print("Error loading other videos: \(error)")
-            }
+            self?.handleResult(result, for: \.otherVideos)
         }
     }
+    
+    private func handleResult(_ result: Result<[HomeVideoModel], APIError>, for keyPath: ReferenceWritableKeyPath<HomeViewModel, Observable<[HomeVideoViewModel]>>) {
+        switch result {
+        case .success(let videos):
+            let viewModels = videos.map { HomeVideoViewModel(videoModel: $0) }
+            self[keyPath: keyPath].value = viewModels
+        case .failure(let error):
+            self.errorMessage.value = error.localizedDescription
+        }
+    }
+    
 }
+

@@ -2,7 +2,7 @@ import UIKit
 
 class SubscribeHoriCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    var subVideoContents: [VideoModel] = []
+    var subVideoContents: [HomeVideoModel] = []
     var welcome: SearchResponse?
     static let identifier = "SubscribeHoriCollectionView"
       

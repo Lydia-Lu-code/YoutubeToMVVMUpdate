@@ -19,9 +19,9 @@ class MainTabBarController: UITabBarController {
         let shortsNav = UINavigationController(rootViewController: shortsVC)
         shortsNav.tabBarItem = UITabBarItem(title: "Shorts", image: nil, tag: 1)
         
-        // AddVC
-        let addVC = AddVC()
-        let addNav = UINavigationController(rootViewController: addVC)
+        // PhotoViewController
+        let photoVC = PhotoViewController()
+        let addNav = UINavigationController(rootViewController: photoVC)
         addNav.tabBarItem = UITabBarItem(title: "Add", image: nil, tag: 2)
         
         // SubscribeVC

@@ -1,8 +1,17 @@
-//
-//  ShortsVideoModel.swift
-//  YoutubeToMVVMUpdate
-//
-//  Created by Lydia Lu on 2024/10/2.
-//
+
 
 import Foundation
+
+struct ShortsVideoModel: Codable {
+    let id: String
+    let title: String
+    let channelTitle: String
+    var thumbnailURL: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case channelTitle = "channel_title"
+        case thumbnailURL = "thumbnail_url"
+    }
+}

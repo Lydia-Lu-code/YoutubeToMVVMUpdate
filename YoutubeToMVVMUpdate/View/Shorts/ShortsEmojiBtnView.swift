@@ -10,8 +10,18 @@ import Foundation
 
 class ShortsEmojiBtnView: UIView {
     
-    var titleText: [String] = ["Int", "不喜歡", "Int", "分享", "Remix", "imgName"]
-    var sfSymbols: [String] = ["hand.thumbsup.fill", "hand.thumbsdown.fill", "person.2.fill", "square.and.arrow.up.fill", "wand.and.stars", "photo.fill"]
+    private var buttons: [UIButton] = []
+    
+    var titleText: [String] = [] {
+        didSet {
+            updateButtons()
+        }
+    }
+    var sfSymbols: [String] = [] {
+        didSet {
+            updateButtons()
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,7 +32,7 @@ class ShortsEmojiBtnView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setStackView() {
+    func setStackView() {
         
         // 创建垂直的 stackView
         let stackView = UIStackView()
@@ -39,46 +49,48 @@ class ShortsEmojiBtnView: UIView {
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
-        // 添加六個按鈕到 stackView 中
-        for i in 0..<6 {
+        for _ in 0..<6 {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
             button.backgroundColor = .clear
             button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            button.titleLabel?.numberOfLines = 2
+            button.titleLabel?.textAlignment = .center
             
-            // 设置 SF Symbols 和文字到按钮的标题中，并在它们之间换行
-            let symbol = UIImage(systemName: sfSymbols[i])
-            let title = titleText[i]
+            stackView.addArrangedSubview(button)
+            buttons.append(button)
             
-            // 使用 NSMutableAttributedString 来设置按钮的标题
+            NSLayoutConstraint.activate([
+                button.heightAnchor.constraint(equalToConstant: 60)
+            ])
+        }
+    
+        
+   
+    }
+    
+    private func updateButtons() {
+        guard titleText.count == sfSymbols.count, titleText.count == buttons.count else { return }
+        
+        for (index, button) in buttons.enumerated() {
             let attributedString = NSMutableAttributedString()
             
-            // 添加 SF Symbol
-            if let symbol = symbol {
+            if let symbol = UIImage(systemName: sfSymbols[index]) {
                 let symbolAttachment = NSTextAttachment(image: symbol)
                 let symbolString = NSAttributedString(attachment: symbolAttachment)
                 attributedString.append(symbolString)
             }
             
-            // 添加换行符
             attributedString.append(NSAttributedString(string: "\n"))
+            attributedString.append(NSAttributedString(string: titleText[index]))
             
-            // 添加文字
-            attributedString.append(NSAttributedString(string: title))
-            
-            // 设置按钮的富文本标题
             button.setAttributedTitle(attributedString, for: .normal)
-            button.titleLabel?.numberOfLines = 2
-            button.titleLabel?.textAlignment = .center
-            
-            // 添加按钮到 stackView 中
-            stackView.addArrangedSubview(button)
-            
-            // 添加按钮的尺寸约束
-            NSLayoutConstraint.activate([
-                button.heightAnchor.constraint(equalToConstant: 60)
-            ])
         }
+    }
+
+    
+    func configure(with video: ShortsVideoModel) {
+        // 如果需要根據視頻數據更新按鈕，可以在這裡實現
     }
 }
 

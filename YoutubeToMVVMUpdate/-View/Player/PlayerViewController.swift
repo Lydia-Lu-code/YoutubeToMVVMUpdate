@@ -16,7 +16,7 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     let buttonTitles = ["👍|👎", "分享", "Remix", "超級感謝", "下載", "剪輯片段", "儲存", "檢舉", ""]
     
-    var videosData: [VideoModel] = []
+    var videosData: [HomeVideoModel] = []
     
     var selectedVideoID: String?
     var selectedTitle: String?
@@ -24,8 +24,8 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let apiService = APIService() // 創建 APIService 的實例
 //    let baseViewController = HomeViewController(vcType: .home)
     
-    var data: Observable<[VideoModel]> = Observable([])  // 明確指定型別並初始化為空陣列
-    var dataLoadedCallback: (([VideoModel]) -> Void)?
+    var data: Observable<[HomeVideoModel]> = Observable([])  // 明確指定型別並初始化為空陣列
+    var dataLoadedCallback: (([HomeVideoModel]) -> Void)?
     var singleVideoView = VideoView()
 //    var videoViewModel = VideoListViewModel()
     
