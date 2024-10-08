@@ -1,20 +1,27 @@
-
-
 import Foundation
 
-class ShortsViewCellViewModel {
-    private var videoContents: [HomeVideoModel]
+class ShortsViewCellViewModel<T> {
     
-    init(videoContents: [HomeVideoModel]) {
-        self.videoContents = videoContents
+    class ViewCellViewModel<T> {
+        private var videoContents: [T]
+        
+        init(videoContents: [T]) {
+            self.videoContents = videoContents
+        }
+        
+        var numberOfItems: Int {
+            return videoContents.count
+        }
+        
+        func videoContent(at index: Int) -> T? {
+            guard index < videoContents.count else { return nil }
+            return videoContents[index]
+        }
     }
     
-    var numberOfItems: Int {
-        return videoContents.count
-    }
+    // 為 HomeVideoModel 創建一個類型別名
+    typealias HomeViewCellViewModel = ViewCellViewModel<HomeVideoModel>
     
-    func videoContent(at index: Int) -> HomeVideoModel? {
-        guard index < videoContents.count else { return nil }
-        return videoContents[index]
-    }
+    // 為 SubscribeVideoModel 創建一個類型別名
+    typealias SubscribeViewCellViewModel = ViewCellViewModel<SubscribeVideoModel>
 }

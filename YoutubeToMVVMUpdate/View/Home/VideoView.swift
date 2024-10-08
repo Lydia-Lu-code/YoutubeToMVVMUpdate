@@ -1,12 +1,13 @@
+
+
 import UIKit
 import WebKit
 
 class VideoView: UIView {
     
-    // 新增 videoModel 屬性
-    var videoModel: HomeVideoModel? {
+    var viewModel: VideoViewModel? {
         didSet {
-            updateView() // 當 videoModel 更新時，更新視圖
+            updateView()
         }
     }
     
@@ -103,19 +104,16 @@ class VideoView: UIView {
     }
     
     private func updateView() {
-        guard let model = videoModel else { return }
+        guard let viewModel = viewModel else { return }
         
-        // 更新 UI 元件的內容
-        labelMidTitle.text = model.title
-        labelMidOther.text = "\(model.channelTitle) ‧ 觀看次數：\(model.viewCount ?? "0") ‧ \(model.daysSinceUpload ?? "未知")"
+        labelMidTitle.text = viewModel.title
+        labelMidOther.text = "\(viewModel.channelTitle) ‧ 觀看次數：\(viewModel.viewCount) ‧ \(viewModel.daysSinceUpload)"
         
-        // 加載視頻縮略圖
-        loadImage(from: model.thumbnailURL) { [weak self] image in
+        loadImage(from: viewModel.thumbnailURL) { [weak self] image in
             self?.videoImgView.image = image
         }
         
-        // 加載帳號圖片
-        loadImage(from: model.accountImageURL!) { [weak self] image in
+        loadImage(from: viewModel.accountImageURL) { [weak self] image in
             self?.photoImageView.image = image
         }
     }

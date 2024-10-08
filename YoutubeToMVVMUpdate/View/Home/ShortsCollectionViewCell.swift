@@ -76,7 +76,7 @@ class ShortsCollectionViewCell: UICollectionViewCell {
     
     public func setImage(from url: URL) {
         URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
+            if error != nil {
                 return
             }
             guard let data = data, let image = UIImage(data: data) else {
@@ -87,6 +87,59 @@ class ShortsCollectionViewCell: UICollectionViewCell {
                 self.button.setImage(image, for: .normal)
             }
         }.resume()
+    }
+    
+//    public func setImage(from url: URL) {
+//        URLSession.shared.dataTask(with: url) { data, _, error in
+//            if let error = error {
+//                return
+//            }
+//            guard let data = data, let image = UIImage(data: data) else {
+//                return
+//            }
+//            
+//            DispatchQueue.main.async {
+//                self.button.setImage(image, for: .normal)
+//            }
+//        }.resume()
+//    }
+    
+    func configure(with videoViewModel: VideoViewModel) {
+        print("Configuring ShortsCollectionViewCell with VideoViewModel")
+        titleLabel.text = videoViewModel.title
+        if let url = URL(string: videoViewModel.thumbnailURL) {
+            setImage(from: url)
+        }
+        // 如果需要，可以設置其他屬性
+        // 例如：channelTitleLabel.text = videoViewModel.channelTitle
+//        
+//        if let homeVideo = videoViewModel as? HomeVideoModel {
+//            configureWithHomeVideo(homeVideo)
+//        } else if let subscribeVideo = videoViewModel as? SubscribeVideoModel {
+//            configureWithSubscribeVideo(subscribeVideo)
+//        } else {
+//            fatalError("不支持的視頻類型")
+//        }
+    }
+    
+//    func configure(with videoViewModel: VideoViewModel) {
+//        print("Configuring ShortsCollectionViewCell with VideoViewModel")
+////    func configure(with videoModel: Any) {
+//        if let homeVideo = videoViewModel as? HomeVideoModel {
+//            configureWithHomeVideo(homeVideo)
+//        } else if let subscribeVideo = videoViewModel as? SubscribeVideoModel {
+//            configureWithSubscribeVideo(subscribeVideo)
+//        } else {
+//            fatalError("不支持的視頻類型")
+//        }
+//    }
+    
+    private func configureWithHomeVideo(_ video: HomeVideoModel) {
+        // 配置 UI 元素使用 HomeVideoModel 的屬性
+    }
+    
+    private func configureWithSubscribeVideo(_ video: SubscribeVideoModel) {
+        // 配置 UI 元素使用 SubscribeVideoModel 的屬性
     }
 }
 

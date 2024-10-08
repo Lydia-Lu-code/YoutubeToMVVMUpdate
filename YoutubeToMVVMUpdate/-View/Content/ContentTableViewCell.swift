@@ -85,7 +85,7 @@ class ContentTableViewCell: UITableViewCell {
         for _ in 0..<count {
             let conVideoFrameView = ConVideoFrameView()
             conVideoFrameView.widthAnchor.constraint(equalToConstant: 130).isActive = true
-            conVideoFrameView.heightAnchor.constraint(equalToConstant: 160).isActive = true
+//            conVideoFrameView.heightAnchor.constraint(equalToConstant: 160).isActive = true
             conVideoFrameViews.append(conVideoFrameView)
             stackView.addArrangedSubview(conVideoFrameView)
         }

@@ -45,7 +45,6 @@
 		5CC1D8992C539FE0003448FE /* ShortsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8702C539FE0003448FE /* ShortsTableViewController.swift */; };
 		5CC1D89A2C539FE0003448FE /* SubscribeHoriCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8722C539FE0003448FE /* SubscribeHoriCollectionView.swift */; };
 		5CC1D89B2C539FE0003448FE /* SubscribeSecItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8732C539FE0003448FE /* SubscribeSecItemView.swift */; };
-		5CC1D89C2C539FE0003448FE /* SubscribeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8742C539FE0003448FE /* SubscribeViewController.swift */; };
 		5CC1D89D2C539FE0003448FE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8762C539FE0003448FE /* HomeViewController.swift */; };
 		5CC1D89F2C539FE0003448FE /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D87A2C539FE0003448FE /* UIViewController+Additions.swift */; };
 		5CC1D8A02C539FE0003448FE /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D87C2C539FE0003448FE /* Observable.swift */; };
@@ -53,6 +52,13 @@
 		5CE176072CAD297700D50DDE /* ShortsVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176062CAD297700D50DDE /* ShortsVideoModel.swift */; };
 		5CE176092CAD29B400D50DDE /* ShortsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176082CAD29B400D50DDE /* ShortsListViewModel.swift */; };
 		5CE1760D2CAED49E00D50DDE /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */; };
+		5CE1760F2CAFD6C600D50DDE /* SubscribeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1760E2CAFD6C600D50DDE /* SubscribeViewController.swift */; };
+		5CE176112CAFD76800D50DDE /* SubscribeVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176102CAFD76800D50DDE /* SubscribeVideoModel.swift */; };
+		5CE176132CAFD95900D50DDE /* SubscribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */; };
+		5CE176152CAFE7B200D50DDE /* SubscribeVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */; };
+		5CE176172CB3A4EA00D50DDE /* SubscriptionFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176162CB3A4EA00D50DDE /* SubscriptionFeedView.swift */; };
+		5CE176192CB4D09900D50DDE /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176182CB4D09900D50DDE /* VideoViewModel.swift */; };
+		5CE1761B2CB538D400D50DDE /* ViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,7 +102,6 @@
 		5CC1D8702C539FE0003448FE /* ShortsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortsTableViewController.swift; sourceTree = "<group>"; };
 		5CC1D8722C539FE0003448FE /* SubscribeHoriCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeHoriCollectionView.swift; sourceTree = "<group>"; };
 		5CC1D8732C539FE0003448FE /* SubscribeSecItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeSecItemView.swift; sourceTree = "<group>"; };
-		5CC1D8742C539FE0003448FE /* SubscribeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeViewController.swift; sourceTree = "<group>"; };
 		5CC1D8762C539FE0003448FE /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5CC1D87A2C539FE0003448FE /* UIViewController+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		5CC1D87C2C539FE0003448FE /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -104,6 +109,13 @@
 		5CE176062CAD297700D50DDE /* ShortsVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsVideoModel.swift; sourceTree = "<group>"; };
 		5CE176082CAD29B400D50DDE /* ShortsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsListViewModel.swift; sourceTree = "<group>"; };
 		5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		5CE1760E2CAFD6C600D50DDE /* SubscribeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewController.swift; sourceTree = "<group>"; };
+		5CE176102CAFD76800D50DDE /* SubscribeVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeVideoModel.swift; sourceTree = "<group>"; };
+		5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewModel.swift; sourceTree = "<group>"; };
+		5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeVideoViewModel.swift; sourceTree = "<group>"; };
+		5CE176162CB3A4EA00D50DDE /* SubscriptionFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionFeedView.swift; sourceTree = "<group>"; };
+		5CE176182CB4D09900D50DDE /* VideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
+		5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +169,7 @@
 				5C46FEE52CA1AE7A00950C64 /* HomeVideoModel.swift */,
 				5CC1D8662C539FE0003448FE /* NavButtonItems.swift */,
 				5CE176062CAD297700D50DDE /* ShortsVideoModel.swift */,
+				5CE176102CAFD76800D50DDE /* SubscribeVideoModel.swift */,
 				5CC1D84A2C539FD0003448FE /* SearchResponse.swift */,
 				5CC1D84B2C539FD0003448FE /* VideosResponse.swift */,
 			);
@@ -168,6 +181,7 @@
 			children = (
 				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
 				5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */,
+				5CC1D8752C539FE0003448FE /* Subscribe */,
 				5CC1D8542C539FE0003448FE /* Add */,
 				5CE1760A2CAD913600D50DDE /* Home */,
 				5CE1760B2CAD914B00D50DDE /* Shorts */,
@@ -237,7 +251,8 @@
 			children = (
 				5CC1D8722C539FE0003448FE /* SubscribeHoriCollectionView.swift */,
 				5CC1D8732C539FE0003448FE /* SubscribeSecItemView.swift */,
-				5CC1D8742C539FE0003448FE /* SubscribeViewController.swift */,
+				5CE1760E2CAFD6C600D50DDE /* SubscribeViewController.swift */,
+				5CE176162CB3A4EA00D50DDE /* SubscriptionFeedView.swift */,
 			);
 			path = Subscribe;
 			sourceTree = "<group>";
@@ -249,7 +264,6 @@
 				5CC1D8632C539FE0003448FE /* Home */,
 				5CC1D8692C539FE0003448FE /* Other */,
 				5CC1D86C2C539FE0003448FE /* Player */,
-				5CC1D8752C539FE0003448FE /* Subscribe */,
 				5CE176052CAAFD0F00D50DDE /* Bind */,
 			);
 			path = "-View";
@@ -258,12 +272,16 @@
 		5CC1D8792C539FE0003448FE /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				5C46FEE72CA1D0EA00950C64 /* HomeVideoViewModel.swift */,
 				5C46FEE12CA1ACD000950C64 /* APIService.swift */,
-				5C46FEEB2CA4763900950C64 /* NavButtonItemsViewModel.swift */,
+				5CE176182CB4D09900D50DDE /* VideoViewModel.swift */,
+				5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */,
+				5C46FEE72CA1D0EA00950C64 /* HomeVideoViewModel.swift */,
 				5C46FF252CA7F81E00950C64 /* HomeViewModel.swift */,
+				5C46FEEB2CA4763900950C64 /* NavButtonItemsViewModel.swift */,
 				5CE176032CAAF23200D50DDE /* ShortsViewCellViewModel.swift */,
 				5CE176082CAD29B400D50DDE /* ShortsListViewModel.swift */,
+				5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */,
+				5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -389,10 +407,14 @@
 				5CC1D8A02C539FE0003448FE /* Observable.swift in Sources */,
 				5CC1D8962C539FE0003448FE /* ShortsBtnView.swift in Sources */,
 				5CC1D8852C539FE0003448FE /* ContentTableViewController.swift in Sources */,
+				5CE176132CAFD95900D50DDE /* SubscribeViewModel.swift in Sources */,
+				5CE1761B2CB538D400D50DDE /* ViewCellViewModel.swift in Sources */,
 				5C46FF262CA7F81E00950C64 /* HomeViewModel.swift in Sources */,
 				5CC1D8822C539FE0003448FE /* PhotoViewController.swift in Sources */,
+				5CE176112CAFD76800D50DDE /* SubscribeVideoModel.swift in Sources */,
 				5CC1D8872C539FE0003448FE /* NotificationCustomView.swift in Sources */,
 				5CC1D89D2C539FE0003448FE /* HomeViewController.swift in Sources */,
+				5CE176152CAFE7B200D50DDE /* SubscribeVideoViewModel.swift in Sources */,
 				5CC1D89A2C539FE0003448FE /* SubscribeHoriCollectionView.swift in Sources */,
 				5C46FEEC2CA4763900950C64 /* NavButtonItemsViewModel.swift in Sources */,
 				5CC1D88D2C539FE0003448FE /* SearchViewController.swift in Sources */,
@@ -401,6 +423,7 @@
 				5C46FEE22CA1ACD000950C64 /* APIService.swift in Sources */,
 				5CE176072CAD297700D50DDE /* ShortsVideoModel.swift in Sources */,
 				5CC1D8942C539FE0003448FE /* PlayerTableViewCell.swift in Sources */,
+				5CE176172CB3A4EA00D50DDE /* SubscriptionFeedView.swift in Sources */,
 				5CE1760D2CAED49E00D50DDE /* BaseViewController.swift in Sources */,
 				5CC1D8912C539FE0003448FE /* NavButtonItems.swift in Sources */,
 				5CC1D8372C539F5A003448FE /* AppDelegate.swift in Sources */,
@@ -411,11 +434,12 @@
 				5C46FEE82CA1D0EB00950C64 /* HomeVideoViewModel.swift in Sources */,
 				5CC1D8922C539FE0003448FE /* ShortsCollectionViewCell.swift in Sources */,
 				5CC1D8932C539FE0003448FE /* VideoView.swift in Sources */,
-				5CC1D89C2C539FE0003448FE /* SubscribeViewController.swift in Sources */,
 				5CC1D8952C539FE0003448FE /* PlayerViewController.swift in Sources */,
 				5CC1D8972C539FE0003448FE /* ShortsEmojiBtnView.swift in Sources */,
 				5CE176042CAAF23200D50DDE /* ShortsViewCellViewModel.swift in Sources */,
+				5CE1760F2CAFD6C600D50DDE /* SubscribeViewController.swift in Sources */,
 				5CC1D8892C539FE0003448FE /* NotificationTableViewCell.swift in Sources */,
+				5CE176192CB4D09900D50DDE /* VideoViewModel.swift in Sources */,
 				5CC1D8882C539FE0003448FE /* NotificationLogVC.swift in Sources */,
 				5CC1D89F2C539FE0003448FE /* UIViewController+Additions.swift in Sources */,
 				5CC1D8812C539FE0003448FE /* MainTabBarController.swift in Sources */,

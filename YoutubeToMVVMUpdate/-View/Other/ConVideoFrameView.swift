@@ -71,7 +71,7 @@ class ConVideoFrameView: UIView {
         
         // 設置 videoView 的約束
         NSLayoutConstraint.activate([
-            conVideoFrameView.heightAnchor.constraint(equalToConstant: 150),
+//            conVideoFrameView.heightAnchor.constraint(equalToConstant: 150),
             conVideoFrameView.widthAnchor.constraint(equalToConstant: 120),
             conVideoFrameView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             conVideoFrameView.centerYAnchor.constraint(equalTo: self.centerYAnchor),

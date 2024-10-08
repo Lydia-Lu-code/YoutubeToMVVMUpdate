@@ -1,13 +1,12 @@
-
 import UIKit
-import Foundation
+import WebKit
 
-class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScrollViewDelegate {
+class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, UIScrollViewDelegate {
     func didTapFirstButton() {
         print("第一個按鈕被點擊")
     }
 
-    private let homeViewModel: HomeViewModel
+    private let subscribeViewModel: SubscribeViewModel
     private var singleVideoView = VideoView()
     private var otherVideoViews: [VideoView] = []
     private var shortsViewCell: ShortsViewCell = ShortsViewCell(frame: .zero)
@@ -22,24 +21,25 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    init(homeViewModel: HomeViewModel = HomeViewModel()) {
-        self.homeViewModel = homeViewModel
+    // 新增的元件
+    private let subscriptionFeedView = SubscriptionFeedView()
+    
+    init(subscribeViewModel: SubscribeViewModel = SubscribeViewModel()) {
+        self.subscribeViewModel = subscribeViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
-        self.homeViewModel = HomeViewModel()
+        self.subscribeViewModel = SubscribeViewModel()
         super.init(coder: coder)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         
         setupUI()
         setupBindings()
-        homeViewModel.loadVideos()
+        subscribeViewModel.loadVideos()
         contentView.layoutIfNeeded()
         
         let totalHeight = contentView.frame.height
@@ -51,20 +51,20 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     }
     
     private func setupBindings() {
-        homeViewModel.shortsVideos.bind { [weak self] videos in
+        self.subscribeViewModel.shortsVideos.bind { [weak self] videos in
             DispatchQueue.main.async {
-                print("Home Received \(videos.count) videos")
+                print("Subscribe Received \(videos.count) videos")
                 self?.shortsViewCell.viewModel = ViewCellViewModel(videoContents: videos)
             }
         }
         
-        homeViewModel.singleVideo.bind { [weak self] video in
+        self.subscribeViewModel.singleVideo.bind { [weak self] video in
             DispatchQueue.main.async {
                 self?.singleVideoView.viewModel = video
             }
         }
         
-        homeViewModel.otherVideos.bind { [weak self] videos in
+        self.subscribeViewModel.otherVideos.bind { [weak self] videos in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 for (index, videoView) in self.otherVideoViews.enumerated() {
@@ -75,7 +75,13 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
             }
         }
         
-        homeViewModel.errorMessage.bind { [weak self] error in
+        self.subscribeViewModel.subscriptionFeed.bind { [weak self] feed in
+            DispatchQueue.main.async {
+                self?.subscriptionFeedView.updateFeed(feed)
+            }
+        }
+        
+        self.subscribeViewModel.errorMessage.bind { [weak self] error in
             if let error = error {
                 DispatchQueue.main.async {
                     self?.showError(error)
@@ -83,12 +89,13 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
             }
         }
     }
+    
       
-      private func showError(_ error: String) {
-          let alert = UIAlertController(title: "錯誤", message: error, preferredStyle: .alert)
-          alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
-          present(alert, animated: true, completion: nil)
-      }
+    private func showError(_ error: String) {
+        let alert = UIAlertController(title: "錯誤", message: error, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
     private func setupUI() {
         setupNavButtonItems()
@@ -124,6 +131,7 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(buttonCollectionCell)
+        contentView.addSubview(subscriptionFeedView)
         contentView.addSubview(singleVideoView)
         contentView.addSubview(shortsViewCell)
 
@@ -135,6 +143,7 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         }
 
         buttonCollectionCell.translatesAutoresizingMaskIntoConstraints = false
+        subscriptionFeedView.translatesAutoresizingMaskIntoConstraints = false
         singleVideoView.translatesAutoresizingMaskIntoConstraints = false
         shortsViewCell.translatesAutoresizingMaskIntoConstraints = false
 
@@ -144,9 +153,14 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
             buttonCollectionCell.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
             buttonCollectionCell.heightAnchor.constraint(equalToConstant: 60),
 
+            subscriptionFeedView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            subscriptionFeedView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            subscriptionFeedView.topAnchor.constraint(equalTo: buttonCollectionCell.bottomAnchor),
+            subscriptionFeedView.heightAnchor.constraint(equalToConstant: 100),
+
             singleVideoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             singleVideoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            singleVideoView.topAnchor.constraint(equalTo: buttonCollectionCell.bottomAnchor),
+            singleVideoView.topAnchor.constraint(equalTo: subscriptionFeedView.bottomAnchor),
             singleVideoView.heightAnchor.constraint(equalToConstant: 300),
 
             shortsViewCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -177,7 +191,6 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         ])
     }
     
-
     private func setupNavButtonItems() {
         navButtonItemsViewModel = NavButtonItemsViewModel(buttonItems: [
             ButtonItem(item: .search),
@@ -234,7 +247,6 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         }
         
         present(alertController, animated: true, completion: nil)
-        
     }
 
     @objc private func presentSearchViewController() {

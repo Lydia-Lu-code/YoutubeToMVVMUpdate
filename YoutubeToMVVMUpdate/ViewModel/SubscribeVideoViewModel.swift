@@ -1,9 +1,9 @@
 import Foundation
 
-class HomeVideoViewModel {
-    let videoModel: HomeVideoModel
+class SubscribeVideoViewModel {
+    let videoModel: SubscribeVideoModel
     
-    init(videoModel: HomeVideoModel) {
+    init(videoModel: SubscribeVideoModel) {
         self.videoModel = videoModel
     }
     
@@ -11,4 +11,3 @@ class HomeVideoViewModel {
         return VideoViewModel(videoModel: videoModel)
     }
 }
-
