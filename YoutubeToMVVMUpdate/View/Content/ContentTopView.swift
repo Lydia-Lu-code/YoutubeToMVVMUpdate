@@ -1,31 +1,52 @@
-//
-//  CustomTopView.swift
-//  YoutubeViewController
-//
-//  Created by Lydia Lu on 2024/4/26.
-//
+
 
 import UIKit
 
 class ContentTopView: UIView {
-
-    // MARK: - Properties
-
-    lazy var containerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     
-    lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 35
-        imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "image1")
-        return imageView
-    }()
+    var viewModel: ContentTopViewModel? {
+        didSet {
+            updateUI()
+        }
+    }
+
+    private let containerView: UIView = {
+         let view = UIView()
+         view.translatesAutoresizingMaskIntoConstraints = false
+         return view
+     }()
+     
+     private let imageView: UIImageView = {
+         let imageView = UIImageView()
+         imageView.translatesAutoresizingMaskIntoConstraints = false
+         imageView.contentMode = .scaleAspectFill
+         imageView.layer.cornerRadius = 35
+         imageView.clipsToBounds = true
+         return imageView
+     }()
+     
+     private let nameLabel: UILabel = {
+         let label = UILabel()
+         label.translatesAutoresizingMaskIntoConstraints = false
+         label.textAlignment = .left
+         label.font = UIFont.boldSystemFont(ofSize: 18)
+         return label
+     }()
+     
+     private let handleButton: UIButton = {
+         let button = UIButton()
+         button.translatesAutoresizingMaskIntoConstraints = false
+         button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+         button.setTitleColor(.label, for: .normal)
+         return button
+     }()
+    
+    
+    
+    
+    
+    
+    // MARK: - Properties
 
     lazy var label: UILabel = {
         let label = UILabel()
@@ -158,9 +179,18 @@ class ContentTopView: UIView {
             bottomStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             bottomStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16), // 調整偏移量以適應 UI
             bottomStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16) // 調整偏移量以適應 UI
+            
 
          ])
      }
+    
+    private func updateUI() {
+        guard let viewModel = viewModel else { return }
+        
+        nameLabel.text = viewModel.userName
+        imageView.image = UIImage(named: viewModel.userImageName)
+        handleButton.setTitle("\(viewModel.userHandle) ‧ 瀏覽頻道 > ", for: .normal)
+    }
 
     
 
