@@ -30,7 +30,7 @@ extension APIError: LocalizedError {
 class APIService {
     
 //    private let apiKey = ""
-    private let apiKey = "AIzaSyDUC57C1L1XO0N7Y6Zh0oLgzk8PnrB3jWo"
+    private let apiKey = "AIzaSyDC2moKhNm_ElfyiKoQeXKftoLHYzsWwWY"
     
     func fetchVideosHome(query: String, maxResults: Int, completion: @escaping (Result<[HomeVideoModel], APIError>) -> Void) {
         let baseURL = "https://www.googleapis.com/youtube/v3/search"
@@ -227,6 +227,59 @@ class APIService {
                 completion(.failure(.decodingError(error)))
             }
         }.resume()
+    }
+    
+    func loadAllVideos(watchHistoryQuery: String, aSeriesQuery: String, bSeriesQuery: String, maxResults: Int, completion: @escaping (Result<[ContentTableViewCellViewModel], APIError>) -> Void) {
+        let group = DispatchGroup()
+        var videoSections: [ContentTableViewCellViewModel] = []
+        var fetchError: APIError?
+
+        // 獲取觀看歷史視頻
+        group.enter()
+        fetchVideosHome(query: watchHistoryQuery, maxResults: 2) { result in
+            defer { group.leave() }
+            switch result {
+            case .success(let videos):
+                let viewModels = videos.map { VideoViewModel(videoModel: $0) }
+                videoSections.append(ContentTableViewCellViewModel(videos: viewModels))
+            case .failure(let error):
+                fetchError = error
+            }
+        }
+
+        // 獲取 A 系列視頻
+        group.enter()
+        fetchVideosHome(query: aSeriesQuery, maxResults: maxResults) { result in
+            defer { group.leave() }
+            switch result {
+            case .success(let videos):
+                let viewModels = videos.map { VideoViewModel(videoModel: $0) }
+                videoSections.append(ContentTableViewCellViewModel(videos: viewModels))
+            case .failure(let error):
+                fetchError = error
+            }
+        }
+
+        // 獲取 B 系列視頻
+        group.enter()
+        fetchVideosHome(query: bSeriesQuery, maxResults: maxResults) { result in
+            defer { group.leave() }
+            switch result {
+            case .success(let videos):
+                let viewModels = videos.map { VideoViewModel(videoModel: $0) }
+                videoSections.append(ContentTableViewCellViewModel(videos: viewModels))
+            case .failure(let error):
+                fetchError = error
+            }
+        }
+
+        group.notify(queue: .main) {
+            if let error = fetchError {
+                completion(.failure(error))
+            } else {
+                completion(.success(videoSections))
+            }
+        }
     }
     
 }

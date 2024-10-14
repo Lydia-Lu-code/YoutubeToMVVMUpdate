@@ -100,4 +100,30 @@ class ConVideoFrameView: UIView {
         ])
         
     }
+    
+}
+
+extension ConVideoFrameView {
+    func configure(with video: VideoViewModel) {
+        titleLbl.text = video.title
+        channelId.text = video.channelTitle
+        loadImage(from: video.thumbnailURL)
+    }
+    
+    private func loadImage(from urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let self = self, error == nil, let data = data, let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async {
+                self.conVideoImgView.image = image
+            }
+        }.resume()
+    }
+    
+    func prepareForReuse() {
+        conVideoImgView.image = nil
+        titleLbl.text = nil
+        channelId.text = nil
+    }
 }

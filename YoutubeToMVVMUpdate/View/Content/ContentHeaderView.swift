@@ -4,7 +4,7 @@ protocol ContentHeaderViewDelegate: AnyObject {
     func doSegueAction()
 }
 
-class ContentHeaderView: UIView {
+class ContentHeaderView: UITableViewHeaderFooterView {
     weak var delegate: ContentHeaderViewDelegate?
     
     // MARK: - UI Components
@@ -25,28 +25,28 @@ class ContentHeaderView: UIView {
     
     // MARK: - Initialization
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         setupViews()
     }
     
     // MARK: - Setup
     
     private func setupViews() {
-        addSubview(leftButton)
-        addSubview(rightButton)
+        contentView.addSubview(leftButton)
+        contentView.addSubview(rightButton)
         
         NSLayoutConstraint.activate([
-            leftButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            leftButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            leftButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            leftButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
-            rightButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            rightButton.centerYAnchor.constraint(equalTo: centerYAnchor)
+            rightButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            rightButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
         
         rightButton.addTarget(self, action: #selector(turnPageAction), for: .touchUpInside)

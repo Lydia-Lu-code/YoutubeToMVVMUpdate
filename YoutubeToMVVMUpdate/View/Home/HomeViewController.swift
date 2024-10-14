@@ -32,14 +32,49 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         super.init(coder: coder)
     }
     
+    private lazy var shortsLbl: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.textColor = .systemGray
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private lazy var playerSymbolImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "play.circle")
+        imageView.tintColor = UIColor.systemBlue
+        imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return imageView
+    }()
+    
+    private lazy var shortsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.addArrangedSubview(playerSymbolImageView)
+        stackView.addArrangedSubview(shortsLbl)
+        stackView.backgroundColor = .systemBackground
+        return stackView
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        
         setupUI()
         setupBindings()
         homeViewModel.loadVideos()
+        updateShortsLabel()
         contentView.layoutIfNeeded()
         
         let totalHeight = contentView.frame.height
@@ -125,6 +160,7 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         scrollView.addSubview(contentView)
         contentView.addSubview(buttonCollectionCell)
         contentView.addSubview(singleVideoView)
+        contentView.addSubview(shortsStackView)
         contentView.addSubview(shortsViewCell)
 
         for _ in 0..<4 {
@@ -149,11 +185,16 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
             singleVideoView.topAnchor.constraint(equalTo: buttonCollectionCell.bottomAnchor),
             singleVideoView.heightAnchor.constraint(equalToConstant: 300),
 
+            shortsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            shortsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            shortsStackView.topAnchor.constraint(equalTo: singleVideoView.bottomAnchor),
+            shortsStackView.heightAnchor.constraint(equalToConstant: 60),
+            
             shortsViewCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             shortsViewCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            shortsViewCell.topAnchor.constraint(equalTo: singleVideoView.bottomAnchor),
+            shortsViewCell.topAnchor.constraint(equalTo: shortsStackView.bottomAnchor),
             shortsViewCell.heightAnchor.constraint(equalToConstant: 670),
-
+  
             otherVideoViews[0].leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             otherVideoViews[0].trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             otherVideoViews[0].topAnchor.constraint(equalTo: shortsViewCell.bottomAnchor),
@@ -177,6 +218,9 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         ])
     }
     
+    private func updateShortsLabel() {
+        shortsLbl.text = homeViewModel.shortsTitle
+    }
 
     private func setupNavButtonItems() {
         navButtonItemsViewModel = NavButtonItemsViewModel(buttonItems: [

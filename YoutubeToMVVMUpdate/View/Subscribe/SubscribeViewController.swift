@@ -9,7 +9,7 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
     private let subscribeViewModel: SubscribeViewModel
     private var singleVideoView = VideoView()
     private var otherVideoViews: [VideoView] = []
-    private var shortsViewCell: ShortsViewCell = ShortsViewCell(frame: .zero)
+
 
     internal var buttonTitles: [String] {
         return [" 📍 ", "全部", "音樂", "遊戲", "合輯", "直播中", "動畫", "寵物", "最新上傳", "讓你耳目一新的影片", "提供意見"]
@@ -21,8 +21,6 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    // 新增的元件
-    private let subscriptionFeedView = SubscriptionFeedView()
     
     init(subscribeViewModel: SubscribeViewModel = SubscribeViewModel()) {
         self.subscribeViewModel = subscribeViewModel
@@ -34,12 +32,60 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
         super.init(coder: coder)
     }
     
+    private lazy var shortsLbl: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.textColor = .systemGray
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private lazy var playerSymbolImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "play.circle")
+        imageView.tintColor = UIColor.systemBlue
+        imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return imageView
+    }()
+    
+    private lazy var shortsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.addArrangedSubview(playerSymbolImageView)
+        stackView.addArrangedSubview(shortsLbl)
+        stackView.backgroundColor = .systemBackground
+        return stackView
+    }()
+    
+    private let subscribeSecItemView = SubscribeSecItemView()
+    private let subscribeHoriCollectionView = SubscribeHoriCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         setupBindings()
         subscribeViewModel.loadVideos()
+        updateShortsLabel()
+        
+        subscribeViewModel.shortsVideos.bind { [weak self] videos in
+            DispatchQueue.main.async {
+                self?.subscribeHoriCollectionView.videoViewModels = videos
+                self?.subscribeHoriCollectionView.reloadData()
+            }
+        }
+        
         contentView.layoutIfNeeded()
         
         let totalHeight = contentView.frame.height
@@ -51,12 +97,6 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
     }
     
     private func setupBindings() {
-        self.subscribeViewModel.shortsVideos.bind { [weak self] videos in
-            DispatchQueue.main.async {
-                print("Subscribe Received \(videos.count) videos")
-                self?.shortsViewCell.viewModel = ViewCellViewModel(videoContents: videos)
-            }
-        }
         
         self.subscribeViewModel.singleVideo.bind { [weak self] video in
             DispatchQueue.main.async {
@@ -72,12 +112,6 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
                         videoView.viewModel = videos[index]
                     }
                 }
-            }
-        }
-        
-        self.subscribeViewModel.subscriptionFeed.bind { [weak self] feed in
-            DispatchQueue.main.async {
-                self?.subscriptionFeedView.updateFeed(feed)
             }
         }
         
@@ -130,10 +164,11 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
     private func setupView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        contentView.addSubview(subscribeSecItemView)
         contentView.addSubview(buttonCollectionCell)
-        contentView.addSubview(subscriptionFeedView)
         contentView.addSubview(singleVideoView)
-        contentView.addSubview(shortsViewCell)
+        contentView.addSubview(shortsStackView)
+        contentView.addSubview(subscribeHoriCollectionView)
 
         for _ in 0..<4 {
             let videoView = VideoView()
@@ -142,35 +177,46 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
             otherVideoViews.append(videoView)
         }
 
+        subscribeSecItemView.translatesAutoresizingMaskIntoConstraints = false
         buttonCollectionCell.translatesAutoresizingMaskIntoConstraints = false
-        subscriptionFeedView.translatesAutoresizingMaskIntoConstraints = false
         singleVideoView.translatesAutoresizingMaskIntoConstraints = false
-        shortsViewCell.translatesAutoresizingMaskIntoConstraints = false
+        shortsStackView.translatesAutoresizingMaskIntoConstraints = false
+        subscribeHoriCollectionView.translatesAutoresizingMaskIntoConstraints = false
+
 
         NSLayoutConstraint.activate([
+            // 新增 subscribeSecItemView 的約束
+            subscribeSecItemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            subscribeSecItemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            subscribeSecItemView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            subscribeSecItemView.heightAnchor.constraint(equalToConstant: 90),
+
+            // 修改 buttonCollectionCell 的 topAnchor
             buttonCollectionCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             buttonCollectionCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            buttonCollectionCell.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            buttonCollectionCell.topAnchor.constraint(equalTo: subscribeSecItemView.bottomAnchor),
             buttonCollectionCell.heightAnchor.constraint(equalToConstant: 60),
-
-            subscriptionFeedView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            subscriptionFeedView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            subscriptionFeedView.topAnchor.constraint(equalTo: buttonCollectionCell.bottomAnchor),
-            subscriptionFeedView.heightAnchor.constraint(equalToConstant: 100),
 
             singleVideoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             singleVideoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            singleVideoView.topAnchor.constraint(equalTo: subscriptionFeedView.bottomAnchor),
+            singleVideoView.topAnchor.constraint(equalTo: buttonCollectionCell.bottomAnchor),
             singleVideoView.heightAnchor.constraint(equalToConstant: 300),
+            
+            shortsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            shortsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            shortsStackView.topAnchor.constraint(equalTo: singleVideoView.bottomAnchor),
+            shortsStackView.heightAnchor.constraint(equalToConstant: 60),
+            
+            subscribeHoriCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            subscribeHoriCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            subscribeHoriCollectionView.topAnchor.constraint(equalTo: shortsStackView.bottomAnchor),
+            subscribeHoriCollectionView.heightAnchor.constraint(equalToConstant: 350), // 調整高度以適應您的設計
 
-            shortsViewCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            shortsViewCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            shortsViewCell.topAnchor.constraint(equalTo: singleVideoView.bottomAnchor),
-            shortsViewCell.heightAnchor.constraint(equalToConstant: 670),
 
             otherVideoViews[0].leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             otherVideoViews[0].trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            otherVideoViews[0].topAnchor.constraint(equalTo: shortsViewCell.bottomAnchor),
+            otherVideoViews[0].topAnchor.constraint(equalTo: subscribeHoriCollectionView.bottomAnchor),
+
             otherVideoViews[0].heightAnchor.constraint(equalToConstant: 300),
 
             otherVideoViews[1].leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -189,6 +235,10 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
             otherVideoViews[3].heightAnchor.constraint(equalToConstant: 300),
             otherVideoViews[3].bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+    }
+    
+    private func updateShortsLabel() {
+        shortsLbl.text = subscribeViewModel.shortsTitle
     }
     
     private func setupNavButtonItems() {

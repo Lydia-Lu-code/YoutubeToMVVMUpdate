@@ -2,6 +2,8 @@ import UIKit
 
 class SubscribeHoriCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    var videoViewModels: [VideoViewModel] = []
+    
     var subVideoContents: [SubscribeVideoModel] = []
     var welcome: SearchResponse?
     static let identifier = "SubscribeHoriCollectionView"
@@ -20,36 +22,35 @@ class SubscribeHoriCollectionView: UICollectionView, UICollectionViewDelegate, U
         self.collectionViewLayout = layout
         commonInit()
     }
-
+    
     private func commonInit() {
         self.isScrollEnabled = true
         self.delegate = self
         self.dataSource = self
         self.register(ShortsCollectionViewCell.self, forCellWithReuseIdentifier: SubscribeHoriCollectionView.identifier)
+        self.showsHorizontalScrollIndicator = false
     }
 
-    // MARK: - UICollectionViewDataSource
+//    private func commonInit() {
+//        self.isScrollEnabled = true
+//        self.delegate = self
+//        self.dataSource = self
+//        self.register(ShortsCollectionViewCell.self, forCellWithReuseIdentifier: SubscribeHoriCollectionView.identifier)
+//    }
 
+    // MARK: - UICollectionViewDataSource
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = welcome?.items.count ?? subVideoContents.count
-        return count
+        return videoViewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SubscribeHoriCollectionView.identifier, for: indexPath) as! ShortsCollectionViewCell
 
-        if let welcome = welcome {
-            let item = welcome.items[indexPath.item]
-            cell.titleLabel.text = item.snippet.title
-            if let url = URL(string: item.snippet.thumbnails.high.url) {
-                cell.setImage(from: url)
-            }
-        } else {
-            let videoContent = subVideoContents[indexPath.item]
-            cell.titleLabel.text = videoContent.title
-            if let url = URL(string: videoContent.thumbnailURL) {
-                cell.setImage(from: url)
-            }
+        let videoViewModel = videoViewModels[indexPath.item]
+        cell.titleLabel.text = videoViewModel.title
+        if let url = URL(string: videoViewModel.thumbnailURL) {
+            cell.setImage(from: url)
         }
         
         return cell
@@ -58,8 +59,10 @@ class SubscribeHoriCollectionView: UICollectionView, UICollectionViewDelegate, U
     // MARK: - UICollectionViewDelegateFlowLayout
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (UIScreen.main.bounds.width - 30) / 2
-        return CGSize(width: width, height: 320)
+        let height = collectionView.bounds.height - 20 // 減去上下邊距
+        let aspectRatio: CGFloat = 9 / 16 // 視頻縮略圖的寬高比
+        let width = height * aspectRatio
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

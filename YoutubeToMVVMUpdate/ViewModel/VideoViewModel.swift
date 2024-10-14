@@ -10,45 +10,34 @@ protocol VideoModelType {
     var accountImageURL: String? { get }
 }
 
-extension HomeVideoModel: VideoModelType {}
-extension SubscribeVideoModel: VideoModelType {}
-
-class VideoViewModel {
-    private let videoModel: VideoModelType
+class VideoViewModel: VideoModelType {
+    let title: String
+    let thumbnailURL: String
+    let channelTitle: String
+    let viewCount: String?
+    let daysSinceUpload: String?
+    let videoID: String
+    let accountImageURL: String?
+    
+    init(title: String, channelTitle: String, thumbnailURL: String, viewCount: String? = nil, daysSinceUpload: String? = nil, videoID: String = "", accountImageURL: String? = nil) {
+        self.title = title
+        self.channelTitle = channelTitle
+        self.thumbnailURL = thumbnailURL
+        self.viewCount = viewCount
+        self.daysSinceUpload = daysSinceUpload
+        self.videoID = videoID
+        self.accountImageURL = accountImageURL
+    }
     
     init(videoModel: VideoModelType) {
-        self.videoModel = videoModel
+        self.title = videoModel.title
+        self.thumbnailURL = videoModel.thumbnailURL
+        self.channelTitle = videoModel.channelTitle
+        self.viewCount = videoModel.viewCount
+        self.daysSinceUpload = videoModel.daysSinceUpload
+        self.videoID = videoModel.videoID
+        self.accountImageURL = videoModel.accountImageURL
     }
-    
-    var title: String {
-        return videoModel.title
-    }
-    
-    var channelTitle: String {
-        return videoModel.channelTitle
-    }
-    
-    var viewCount: String {
-        return videoModel.viewCount ?? "0"
-    }
-    
-    var daysSinceUpload: String {
-        return videoModel.daysSinceUpload ?? "未知"
-    }
-    
-    var thumbnailURL: String {
-        return videoModel.thumbnailURL
-    }
-    
-    var accountImageURL: String {
-        return videoModel.accountImageURL ?? ""
-    }
-    
-    var videoID: String {
-        return videoModel.videoID
-    }
-    
-    
     
     var videoEmbedHTML: String {
         return """
@@ -62,11 +51,11 @@ class VideoViewModel {
     }
     
     var viewCountText: String {
-        return convertViewCount(viewCount)
+        return convertViewCount(viewCount ?? "0")
     }
     
     var timeSinceUploadText: String {
-        return calculateTimeSinceUpload(from: daysSinceUpload)
+        return calculateTimeSinceUpload(from: daysSinceUpload ?? "")
     }
     
     private func convertViewCount(_ viewCountString: String) -> String {
@@ -106,3 +95,5 @@ class VideoViewModel {
         return ""
     }
 }
+
+

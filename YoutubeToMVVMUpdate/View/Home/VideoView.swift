@@ -107,26 +107,35 @@ class VideoView: UIView {
         guard let viewModel = viewModel else { return }
         
         labelMidTitle.text = viewModel.title
-        labelMidOther.text = "\(viewModel.channelTitle) ‧ 觀看次數：\(viewModel.viewCount) ‧ \(viewModel.daysSinceUpload)"
+        
+        // 使用空字符串作為預設值
+        let channelTitle = viewModel.channelTitle ?? ""
+        let viewCount = viewModel.viewCount ?? "0"
+        let daysSinceUpload = viewModel.daysSinceUpload ?? ""
+        
+        labelMidOther.text = "\(channelTitle) ‧ 觀看次數：\(viewCount) ‧ \(daysSinceUpload)"
         
         loadImage(from: viewModel.thumbnailURL) { [weak self] image in
             self?.videoImgView.image = image
         }
         
-        loadImage(from: viewModel.accountImageURL) { [weak self] image in
+        // 使用空字符串作為預設值
+        loadImage(from: viewModel.accountImageURL ?? "") { [weak self] image in
             self?.photoImageView.image = image
         }
     }
     
-    private func loadImage(from url: String, completion: @escaping (UIImage?) -> Void) {
-        guard let url = URL(string: url) else {
+    private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+        guard let url = URL(string: urlString), !urlString.isEmpty else {
             completion(nil)
             return
         }
         
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
-                completion(nil)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
                 return
             }
             let image = UIImage(data: data)
@@ -136,5 +145,6 @@ class VideoView: UIView {
         }
         task.resume()
     }
+    
 }
 

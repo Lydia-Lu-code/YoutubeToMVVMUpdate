@@ -48,3 +48,5 @@ class SubscribeVideoModel: Codable {
         accountImageURL = try container.decodeIfPresent(String.self, forKey: .accountImageURL)
     }
 }
+
+extension SubscribeVideoModel: VideoModelType {}

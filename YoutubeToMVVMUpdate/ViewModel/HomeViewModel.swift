@@ -12,6 +12,8 @@ class HomeViewModel {
         self.apiService = apiService
     }
     
+    let shortsTitle: String = "Shorts"
+    
     func loadVideos() {
         loadShortsVideos()
         loadSingleVideo()

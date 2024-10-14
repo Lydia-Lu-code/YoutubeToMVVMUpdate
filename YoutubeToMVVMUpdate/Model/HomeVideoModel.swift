@@ -40,3 +40,5 @@ class HomeVideoModel: Codable {
         accountImageURL = try container.decodeIfPresent(String.self, forKey: .accountImageURL)
     }
 }
+
+extension HomeVideoModel: VideoModelType {}

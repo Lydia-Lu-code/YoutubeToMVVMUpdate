@@ -10,9 +10,22 @@ class ContentTableViewCell: UITableViewCell {
         }
     }
     
-    private var conVideoFrameViews: [ConVideoFrameView] = []
-    private let scrollView = UIScrollView()
-    private let stackView = UIStackView()
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
     // MARK: - Initialization
     
@@ -21,9 +34,8 @@ class ContentTableViewCell: UITableViewCell {
         setupViews()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupViews()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Setup
@@ -32,22 +44,15 @@ class ContentTableViewCell: UITableViewCell {
         contentView.addSubview(scrollView)
         scrollView.addSubview(stackView)
         
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
-        
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            scrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            scrollView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            scrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            scrollView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -10),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         ])
@@ -59,51 +64,24 @@ class ContentTableViewCell: UITableViewCell {
         guard let viewModel = viewModel else { return }
         
         // Clear existing views
-        conVideoFrameViews.forEach { $0.removeFromSuperview() }
-        conVideoFrameViews.removeAll()
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        // Create new views
-        for index in 0..<viewModel.numberOfVideos {
-            if let video = viewModel.videoAt(index: index) {
-                let conVideoFrameView = ConVideoFrameView()
-                conVideoFrameView.widthAnchor.constraint(equalToConstant: 130).isActive = true
-                conVideoFrameView.titleLbl.text = video.title
-                conVideoFrameView.channelId.text = video.channelTitle
-                setImage(from: video.thumbnailURL, to: conVideoFrameView.conVideoImgView)
-                conVideoFrameViews.append(conVideoFrameView)
-                stackView.addArrangedSubview(conVideoFrameView)
-            }
+        // Add new views
+        for video in viewModel.videos {
+            let videoView = ConVideoFrameView()
+            videoView.configure(with: video)
+            videoView.widthAnchor.constraint(equalToConstant: 130).isActive = true
+            stackView.addArrangedSubview(videoView)
         }
         
-        // Update stackView width constraint
-        stackView.widthAnchor.constraint(equalToConstant: calculateStackViewWidth()).isActive = true
+        // Update content size
+        let contentWidth = CGFloat(viewModel.videos.count) * (130 + stackView.spacing) - stackView.spacing + 20
+        scrollView.contentSize = CGSize(width: contentWidth, height: scrollView.frame.height)
     }
     
-    
-    private func calculateStackViewWidth() -> CGFloat {
-        let totalConVideoFrameViewWidth = 130 * viewModel!.numberOfVideos
-        let totalSpacingWidth = 5 * (viewModel!.numberOfVideos - 1)
-        let totalPaddingWidth = 10 * 2
-        return CGFloat(totalConVideoFrameViewWidth + totalSpacingWidth + totalPaddingWidth)
-    }
-    
-    private func setImage(from urlString: String, to imageView: UIImageView) {
-        guard let url = URL(string: urlString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if error != nil { return }
-            guard let data = data, let image = UIImage(data: data) else { return }
-            DispatchQueue.main.async {
-                imageView.image = image
-            }
-        }.resume()
-    }
-  
     override func prepareForReuse() {
         super.prepareForReuse()
-        conVideoFrameViews.forEach { $0.prepareForReuse() }
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
-    
 }
-
 

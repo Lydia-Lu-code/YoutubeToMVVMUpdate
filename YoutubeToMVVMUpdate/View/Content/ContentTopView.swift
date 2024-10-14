@@ -1,198 +1,97 @@
-
-
 import UIKit
 
-class ContentTopView: UIView {
+class ContentTopView: UITableViewHeaderFooterView {
+    
+    // MARK: - Properties
     
     var viewModel: ContentTopViewModel? {
         didSet {
             updateUI()
         }
     }
-
-    private let containerView: UIView = {
-         let view = UIView()
-         view.translatesAutoresizingMaskIntoConstraints = false
-         return view
-     }()
-     
-     private let imageView: UIImageView = {
-         let imageView = UIImageView()
-         imageView.translatesAutoresizingMaskIntoConstraints = false
-         imageView.contentMode = .scaleAspectFill
-         imageView.layer.cornerRadius = 35
-         imageView.clipsToBounds = true
-         return imageView
-     }()
-     
-     private let nameLabel: UILabel = {
-         let label = UILabel()
-         label.translatesAutoresizingMaskIntoConstraints = false
-         label.textAlignment = .left
-         label.font = UIFont.boldSystemFont(ofSize: 18)
-         return label
-     }()
-     
-     private let handleButton: UIButton = {
-         let button = UIButton()
-         button.translatesAutoresizingMaskIntoConstraints = false
-         button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-         button.setTitleColor(.label, for: .normal)
-         return button
-     }()
     
+    // MARK: - UI Components
     
+    private let userImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
-    
-    
-    
-    // MARK: - Properties
-
-    lazy var label: UILabel = {
+    private let userNameLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
         label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.text = "Lydia"
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
-    lazy var button: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setTitle("﻿@user-12345678﻿．﻿ｕ﻿瀏覽頻道﻿ ﻿>﻿ ", for: .normal)
-        button.setTitleColor(.label, for: .normal)
-        return button
+    
+    private let userHandleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .gray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
+    // MARK: - Initialization
     
-
-    lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.distribution = .fill
-        return stackView
-    }()
-
-    lazy var btn1: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.setTitle("切換帳戶", for: .normal)
-        button.layer.cornerRadius = 15 // 设置圆角
-        button.clipsToBounds = true // 确保子视图被裁剪到圆角
-        button.backgroundColor = .darkGray
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15) // 设置按钮内容的内边距
-
-        return button
-    }()
-
-    lazy var btn2: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.setTitle("﻿Google﻿帳戶", for: .normal)
-        button.layer.cornerRadius = 15 // 设置圆角
-        button.clipsToBounds = true // 确保子视图被裁剪到圆角
-        button.backgroundColor = .darkGray
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15) // 设置按钮内容的内边距
-
-        return button
-    }()
-
-    lazy var btn3: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.setTitle("﻿啟用無痕視窗", for: .normal)
-        button.layer.cornerRadius = 15 // 设置圆角
-        button.clipsToBounds = true // 确保子视图被裁剪到圆角
-        button.backgroundColor = .darkGray
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15) // 设置按钮内容的内边距
-
-        return button
-    }()
-    
-
-    lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = 15
-        return stackView
-    }()
-
-    // MARK: - Init
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        setupViews()
     }
-
+    
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        setupViews()
     }
-
-    // MARK: - Setup UI
-
-    private func setupUI() {
-        addSubview(containerView)
-        containerView.addSubview(imageView)
-        containerView.addSubview(stackView)
-        containerView.addSubview(bottomStackView)
-
-        stackView.addArrangedSubview(label)
-        stackView.addArrangedSubview(button)
+    
+    // MARK: - Setup
+    
+    private func setupViews() {
+        contentView.addSubview(userImageView)
+        contentView.addSubview(userNameLabel)
+        contentView.addSubview(userHandleLabel)
         
-        bottomStackView.addArrangedSubview(btn1)
-        bottomStackView.addArrangedSubview(btn2)
-        bottomStackView.addArrangedSubview(btn3)
-
         NSLayoutConstraint.activate([
-
-            containerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-
+            userImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            userImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            userImageView.widthAnchor.constraint(equalToConstant: 60),
+            userImageView.heightAnchor.constraint(equalToConstant: 60),
             
-            // imageView 的約束
-            imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16), // 調整偏移量以適應 UI
-            imageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16), // 調整偏移量以適應 UI
-            imageView.widthAnchor.constraint(equalToConstant: 70),
-            imageView.heightAnchor.constraint(equalToConstant: 70),
-
-            // stackView 的約束
-            stackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8),
-            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
-            stackView.topAnchor.constraint(equalTo: imageView.topAnchor),
-            stackView.heightAnchor.constraint(equalToConstant: 70),
-         
-
-            // bottomStackView 的約束
-            bottomStackView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            bottomStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            bottomStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16), // 調整偏移量以適應 UI
-            bottomStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16) // 調整偏移量以適應 UI
+            userNameLabel.leadingAnchor.constraint(equalTo: userImageView.trailingAnchor, constant: 16),
+            userNameLabel.topAnchor.constraint(equalTo: userImageView.topAnchor),
             
-
-         ])
-     }
+            userHandleLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
+            userHandleLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 4)
+        ])
+        
+        userImageView.layer.cornerRadius = 30
+    }
+    
+    // MARK: - UI Update
     
     private func updateUI() {
         guard let viewModel = viewModel else { return }
         
-        nameLabel.text = viewModel.userName
-        imageView.image = UIImage(named: viewModel.userImageName)
-        handleButton.setTitle("\(viewModel.userHandle) ‧ 瀏覽頻道 > ", for: .normal)
+        userNameLabel.text = viewModel.displayName
+        userHandleLabel.text = viewModel.userHandle
+        
+        if let url = viewModel.profileImageURL {
+            // 在實際應用中，您可能想使用像 SDWebImage 這樣的庫來加載圖片
+            // 這裡使用一個簡單的方法來示範
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: url),
+                   let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self.userImageView.image = image
+                    }
+                }
+            }
+        } else {
+            userImageView.image = UIImage(named: viewModel.userImageName)
+        }
     }
-
-    
-
 }
 

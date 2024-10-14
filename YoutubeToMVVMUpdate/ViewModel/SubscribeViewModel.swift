@@ -6,23 +6,29 @@ class SubscribeViewModel {
     var shortsVideos: Observable<[VideoViewModel]> = Observable([])
     var singleVideo: Observable<VideoViewModel?> = Observable(nil)
     var otherVideos: Observable<[VideoViewModel]> = Observable([])
-    var subscriptionFeed: Observable<[SubscriptionFeedItem]> = Observable([])
     var errorMessage: Observable<String?> = Observable(nil)
     
     init(apiService: APIService = APIService()) {
         self.apiService = apiService
     }
     
+    let shortsTitle: String = "Shorts"
+    
     func loadVideos() {
         loadShortsVideos()
         loadSingleVideo()
         loadOtherVideos()
-        loadSubscriptionFeed()
     }
     
     private func loadShortsVideos() {
-        apiService.fetchVideosSubscribe(query: "Subscribe Shorts", maxResults: 4) { [weak self] result in
-            self?.handleResult(result, for: \.shortsVideos)
+        apiService.fetchVideosSubscribe(query: "Subscribe Shorts", maxResults: 18) { [weak self] result in
+            switch result {
+            case .success(let videos):
+                let viewModels = videos.map { VideoViewModel(videoModel: $0) }
+                self?.shortsVideos.value = viewModels
+            case .failure(let error):
+                self?.errorMessage.value = error.localizedDescription
+            }
         }
     }
     
@@ -43,16 +49,6 @@ class SubscribeViewModel {
         apiService.fetchVideosSubscribe(query: "Subscribe Recommended", maxResults: 5) { [weak self] result in
             self?.handleResult(result, for: \.otherVideos)
         }
-    }
-
-    private func loadSubscriptionFeed() {
-        // 這裡應該調用API來獲取訂閱頻道的動態
-        // 為了示例，我們暫時使用模擬數據
-        let mockFeed = [
-            SubscriptionFeedItem(channelName: "Channel 1", channelImageURL: URL(string: "https://example.com/image1.jpg")!),
-            SubscriptionFeedItem(channelName: "Channel 2", channelImageURL: URL(string: "https://example.com/image2.jpg")!)
-        ]
-        self.subscriptionFeed.value = mockFeed
     }
     
     private func handleResult(_ result: Result<[SubscribeVideoModel], APIError>, for keyPath: ReferenceWritableKeyPath<SubscribeViewModel, Observable<[VideoViewModel]>>) {

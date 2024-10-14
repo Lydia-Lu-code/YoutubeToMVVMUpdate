@@ -56,9 +56,12 @@
 		5CE176112CAFD76800D50DDE /* SubscribeVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176102CAFD76800D50DDE /* SubscribeVideoModel.swift */; };
 		5CE176132CAFD95900D50DDE /* SubscribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */; };
 		5CE176152CAFE7B200D50DDE /* SubscribeVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */; };
-		5CE176172CB3A4EA00D50DDE /* SubscriptionFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176162CB3A4EA00D50DDE /* SubscriptionFeedView.swift */; };
 		5CE176192CB4D09900D50DDE /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176182CB4D09900D50DDE /* VideoViewModel.swift */; };
 		5CE1761B2CB538D400D50DDE /* ViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */; };
+		5CE1761D2CB594A400D50DDE /* ContentTopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761C2CB594A400D50DDE /* ContentTopViewModel.swift */; };
+		5CE1761F2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */; };
+		5CE176212CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */; };
+		5CE176232CB666CB00D50DDE /* NavButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176222CB666CB00D50DDE /* NavButtonViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,9 +116,12 @@
 		5CE176102CAFD76800D50DDE /* SubscribeVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeVideoModel.swift; sourceTree = "<group>"; };
 		5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewModel.swift; sourceTree = "<group>"; };
 		5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeVideoViewModel.swift; sourceTree = "<group>"; };
-		5CE176162CB3A4EA00D50DDE /* SubscriptionFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionFeedView.swift; sourceTree = "<group>"; };
 		5CE176182CB4D09900D50DDE /* VideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
 		5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCellViewModel.swift; sourceTree = "<group>"; };
+		5CE1761C2CB594A400D50DDE /* ContentTopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTopViewModel.swift; sourceTree = "<group>"; };
+		5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewControllerViewModel.swift; sourceTree = "<group>"; };
+		5CE176222CB666CB00D50DDE /* NavButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavButtonViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +187,7 @@
 			children = (
 				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
 				5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */,
+				5CC1D8592C539FE0003448FE /* Content */,
 				5CC1D8752C539FE0003448FE /* Subscribe */,
 				5CC1D8542C539FE0003448FE /* Add */,
 				5CE1760A2CAD913600D50DDE /* Home */,
@@ -211,22 +218,14 @@
 		5CC1D85E2C539FE0003448FE /* Notification */ = {
 			isa = PBXGroup;
 			children = (
+				5CC1D8602C539FE0003448FE /* MenuViewController.swift */,
+				5CC1D8612C539FE0003448FE /* SearchViewController.swift */,
 				5CC1D85A2C539FE0003448FE /* NotificationCustomView.swift */,
 				5CC1D85B2C539FE0003448FE /* NotificationLogVC.swift */,
 				5CC1D85C2C539FE0003448FE /* NotificationTableViewCell.swift */,
 				5CC1D85D2C539FE0003448FE /* NotificationTopButtonCollectionCell.swift */,
 			);
 			path = Notification;
-			sourceTree = "<group>";
-		};
-		5CC1D8632C539FE0003448FE /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				5CC1D85E2C539FE0003448FE /* Notification */,
-				5CC1D8602C539FE0003448FE /* MenuViewController.swift */,
-				5CC1D8612C539FE0003448FE /* SearchViewController.swift */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 		5CC1D8692C539FE0003448FE /* Other */ = {
@@ -252,7 +251,6 @@
 				5CC1D8722C539FE0003448FE /* SubscribeHoriCollectionView.swift */,
 				5CC1D8732C539FE0003448FE /* SubscribeSecItemView.swift */,
 				5CE1760E2CAFD6C600D50DDE /* SubscribeViewController.swift */,
-				5CE176162CB3A4EA00D50DDE /* SubscriptionFeedView.swift */,
 			);
 			path = Subscribe;
 			sourceTree = "<group>";
@@ -260,8 +258,6 @@
 		5CC1D8772C539FE0003448FE /* -View */ = {
 			isa = PBXGroup;
 			children = (
-				5CC1D8592C539FE0003448FE /* Content */,
-				5CC1D8632C539FE0003448FE /* Home */,
 				5CC1D8692C539FE0003448FE /* Other */,
 				5CC1D86C2C539FE0003448FE /* Player */,
 				5CE176052CAAFD0F00D50DDE /* Bind */,
@@ -274,14 +270,18 @@
 			children = (
 				5C46FEE12CA1ACD000950C64 /* APIService.swift */,
 				5CE176182CB4D09900D50DDE /* VideoViewModel.swift */,
-				5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */,
 				5C46FEE72CA1D0EA00950C64 /* HomeVideoViewModel.swift */,
 				5C46FF252CA7F81E00950C64 /* HomeViewModel.swift */,
 				5C46FEEB2CA4763900950C64 /* NavButtonItemsViewModel.swift */,
+				5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */,
 				5CE176032CAAF23200D50DDE /* ShortsViewCellViewModel.swift */,
 				5CE176082CAD29B400D50DDE /* ShortsListViewModel.swift */,
 				5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */,
 				5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */,
+				5CE1761C2CB594A400D50DDE /* ContentTopViewModel.swift */,
+				5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */,
+				5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */,
+				5CE176222CB666CB00D50DDE /* NavButtonViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -313,6 +313,7 @@
 		5CE1760A2CAD913600D50DDE /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				5CC1D85E2C539FE0003448FE /* Notification */,
 				5CC1D8762C539FE0003448FE /* HomeViewController.swift */,
 				5CC1D8622C539FE0003448FE /* ShortsViewCell.swift */,
 				5CC1D8642C539FE0003448FE /* ButtonCollectionViewCell.swift */,
@@ -412,6 +413,7 @@
 				5C46FF262CA7F81E00950C64 /* HomeViewModel.swift in Sources */,
 				5CC1D8822C539FE0003448FE /* PhotoViewController.swift in Sources */,
 				5CE176112CAFD76800D50DDE /* SubscribeVideoModel.swift in Sources */,
+				5CE1761D2CB594A400D50DDE /* ContentTopViewModel.swift in Sources */,
 				5CC1D8872C539FE0003448FE /* NotificationCustomView.swift in Sources */,
 				5CC1D89D2C539FE0003448FE /* HomeViewController.swift in Sources */,
 				5CE176152CAFE7B200D50DDE /* SubscribeVideoViewModel.swift in Sources */,
@@ -421,9 +423,9 @@
 				5CC1D84E2C539FD0003448FE /* VideosResponse.swift in Sources */,
 				5CC1D89B2C539FE0003448FE /* SubscribeSecItemView.swift in Sources */,
 				5C46FEE22CA1ACD000950C64 /* APIService.swift in Sources */,
+				5CE176212CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift in Sources */,
 				5CE176072CAD297700D50DDE /* ShortsVideoModel.swift in Sources */,
 				5CC1D8942C539FE0003448FE /* PlayerTableViewCell.swift in Sources */,
-				5CE176172CB3A4EA00D50DDE /* SubscriptionFeedView.swift in Sources */,
 				5CE1760D2CAED49E00D50DDE /* BaseViewController.swift in Sources */,
 				5CC1D8912C539FE0003448FE /* NavButtonItems.swift in Sources */,
 				5CC1D8372C539F5A003448FE /* AppDelegate.swift in Sources */,
@@ -432,12 +434,14 @@
 				5CC1D88A2C539FE0003448FE /* NotificationTopButtonCollectionCell.swift in Sources */,
 				5CC1D8902C539FE0003448FE /* ConVideoFrameView.swift in Sources */,
 				5C46FEE82CA1D0EB00950C64 /* HomeVideoViewModel.swift in Sources */,
+				5CE176232CB666CB00D50DDE /* NavButtonViewModel.swift in Sources */,
 				5CC1D8922C539FE0003448FE /* ShortsCollectionViewCell.swift in Sources */,
 				5CC1D8932C539FE0003448FE /* VideoView.swift in Sources */,
 				5CC1D8952C539FE0003448FE /* PlayerViewController.swift in Sources */,
 				5CC1D8972C539FE0003448FE /* ShortsEmojiBtnView.swift in Sources */,
 				5CE176042CAAF23200D50DDE /* ShortsViewCellViewModel.swift in Sources */,
 				5CE1760F2CAFD6C600D50DDE /* SubscribeViewController.swift in Sources */,
+				5CE1761F2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift in Sources */,
 				5CC1D8892C539FE0003448FE /* NotificationTableViewCell.swift in Sources */,
 				5CE176192CB4D09900D50DDE /* VideoViewModel.swift in Sources */,
 				5CC1D8882C539FE0003448FE /* NotificationLogVC.swift in Sources */,
