@@ -40,6 +40,18 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     }()
 
     let greyColor = UIColor(red: 33/255.0, green: 33/255.0, blue: 33/255.0, alpha: 1)
+    
+    private let viewModel: MenuViewModel
+
+    init(viewModel: MenuViewModel = MenuViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        self.viewModel = MenuViewModel()
+        super.init(coder: coder)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,31 +59,23 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         let screenWidth = UIScreen.main.bounds.width
         let width = screenWidth * 0.75
         
-        // 使用窗口的尺寸来设置视图
-        view.frame = CGRect(x: 0, y: 0, width: width, height: UIScreen.main.bounds.height)
+        view.frame = CGRect(x: 0, y: 0, width: width, height: 0)
         view.backgroundColor = greyColor
         
-        // 添加表视图
+        setupTableView()
+        setupGestures()
+        setupNavigationBar()
+        
+//        view.backgroundColor = .white
+    }
+    
+    private func setupTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = greyColor
-        tableView.isScrollEnabled = false
+        tableView.isScrollEnabled = true
         
-        // 添加背景视图
-        let backgroundView = UIView(frame: self.view.bounds)
-        backgroundView.backgroundColor = greyColor
-        self.view.insertSubview(backgroundView, at: 0)
-        
-        // 添加点击手势识别器
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
-        backgroundView.addGestureRecognizer(tapGesture)
-        
-        // 添加返回键
-        let backButton = UIBarButtonItem(title: "返回", style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem = backButton
-        
-        // 添加自动布局约束
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -80,10 +84,26 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         ])
     }
     
-    @objc func handleSwipeRightGesture(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.direction == .right {
-            dismiss(animated: true, completion: nil)
-        }
+    private func setupGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        view.addGestureRecognizer(tapGesture)
+        
+        let swipeRightGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+        swipeRightGesture.direction = .right
+        view.addGestureRecognizer(swipeRightGesture)
+        
+        let swipeLeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+        swipeLeftGesture.direction = .left
+        view.addGestureRecognizer(swipeLeftGesture)
+    }
+    
+    private func setupNavigationBar() {
+        let backButton = UIBarButtonItem(title: "返回", style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc private func backButtonTapped() {
@@ -91,24 +111,24 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
-        self.dismiss(animated: true, completion: nil)
+        let location = gesture.location(in: view)
+        if !tableView.frame.contains(location) {
+            dismiss(animated: true, completion: nil)
+        }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // 确保 tableView 始终保持在视图的顶部
-        tableView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return MenuOptions.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = MenuOptions.allCases[indexPath.row].rawValue
+        let output = viewModel.transform(input: MenuViewModel.Input(selectedItemIndex: indexPath.row))
+        let menuItem = output.menuItems[indexPath.row]
+        
+        cell.textLabel?.text = menuItem.rawValue
         cell.textLabel?.textColor = .white
-        cell.imageView?.image = UIImage(systemName: MenuOptions.allCases[indexPath.row].imageName)
+        cell.imageView?.image = UIImage(systemName: menuItem.imageName)
         cell.imageView?.tintColor = .white
         cell.backgroundColor = greyColor
         return cell
@@ -116,11 +136,13 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let item = MenuOptions.allCases[indexPath.row]
+        let output = viewModel.transform(input: MenuViewModel.Input(selectedItemIndex: indexPath.row))
+        if let selectedItem = output.selectedItem {
+            print("Selected item: \(selectedItem.rawValue)")
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 }
-

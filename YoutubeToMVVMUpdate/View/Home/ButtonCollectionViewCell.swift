@@ -7,6 +7,7 @@ protocol ButtonCollectionCellDelegate: AnyObject {
 
 class ButtonCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    
     weak var delegate: ButtonCollectionCellDelegate?
     
     static let identifier = "ButtonCollectionViewCell"
@@ -40,10 +41,17 @@ class ButtonCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, 
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return delegate?.buttonTitles.count ?? 0
     }
     
+    @objc private func buttonTapped(_ sender: UIButton) {
+        if sender.tag == 0 {
+            delegate?.didTapFirstButton()
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ButtonCollectionViewButtonCell.identifier, for: indexPath) as? ButtonCollectionViewButtonCell else {
             fatalError("Failed to dequeue ButtonCollectionViewButtonCell")
@@ -51,15 +59,9 @@ class ButtonCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, 
         
         let title = delegate?.buttonTitles[indexPath.item] ?? ""
         cell.configure(with: title, isLastButton: indexPath.item == (delegate?.buttonTitles.count ?? 0) - 1)
-        cell.button.tag = indexPath.item // 設定按鈕的 tag 為 indexPath.item
-        cell.button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside) // 設置按鈕點擊事件
+        cell.button.tag = indexPath.item
+        cell.button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         return cell
-    }
-
-    @objc private func buttonTapped(_ sender: UIButton) {
-        if sender.tag == 0 { // 判斷是否是第一個按鈕
-            delegate?.didTapFirstButton()
-        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

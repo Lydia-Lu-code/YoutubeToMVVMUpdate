@@ -62,6 +62,11 @@
 		5CE1761F2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */; };
 		5CE176212CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */; };
 		5CE176232CB666CB00D50DDE /* NavButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176222CB666CB00D50DDE /* NavButtonViewModel.swift */; };
+		5CE176272CBE342A00D50DDE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176262CBE342A00D50DDE /* SettingsViewController.swift */; };
+		5CE176292CBE6BDC00D50DDE /* SlideInTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176282CBE6BDC00D50DDE /* SlideInTransitionAnimator.swift */; };
+		5CE1762B2CBE6C1400D50DDE /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1762A2CBE6C1400D50DDE /* CustomPresentationController.swift */; };
+		5CE1762D2CBEB65B00D50DDE /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1762C2CBEB65B00D50DDE /* MenuViewModel.swift */; };
+		5CE1762F2CC0CAF400D50DDE /* ShortsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1762E2CC0CAF400D50DDE /* ShortsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +127,11 @@
 		5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewControllerViewModel.swift; sourceTree = "<group>"; };
 		5CE176222CB666CB00D50DDE /* NavButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavButtonViewModel.swift; sourceTree = "<group>"; };
+		5CE176262CBE342A00D50DDE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		5CE176282CBE6BDC00D50DDE /* SlideInTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInTransitionAnimator.swift; sourceTree = "<group>"; };
+		5CE1762A2CBE6C1400D50DDE /* CustomPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationController.swift; sourceTree = "<group>"; };
+		5CE1762C2CBEB65B00D50DDE /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
+		5CE1762E2CC0CAF400D50DDE /* ShortsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +197,7 @@
 			children = (
 				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
 				5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */,
+				5CE176262CBE342A00D50DDE /* SettingsViewController.swift */,
 				5CC1D8592C539FE0003448FE /* Content */,
 				5CC1D8752C539FE0003448FE /* Subscribe */,
 				5CC1D8542C539FE0003448FE /* Add */,
@@ -219,6 +230,8 @@
 			isa = PBXGroup;
 			children = (
 				5CC1D8602C539FE0003448FE /* MenuViewController.swift */,
+				5CE176282CBE6BDC00D50DDE /* SlideInTransitionAnimator.swift */,
+				5CE1762A2CBE6C1400D50DDE /* CustomPresentationController.swift */,
 				5CC1D8612C539FE0003448FE /* SearchViewController.swift */,
 				5CC1D85A2C539FE0003448FE /* NotificationCustomView.swift */,
 				5CC1D85B2C539FE0003448FE /* NotificationLogVC.swift */,
@@ -282,6 +295,8 @@
 				5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */,
 				5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */,
 				5CE176222CB666CB00D50DDE /* NavButtonViewModel.swift */,
+				5CE1762C2CBEB65B00D50DDE /* MenuViewModel.swift */,
+				5CE1762E2CC0CAF400D50DDE /* ShortsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -411,17 +426,21 @@
 				5CE176132CAFD95900D50DDE /* SubscribeViewModel.swift in Sources */,
 				5CE1761B2CB538D400D50DDE /* ViewCellViewModel.swift in Sources */,
 				5C46FF262CA7F81E00950C64 /* HomeViewModel.swift in Sources */,
+				5CE176292CBE6BDC00D50DDE /* SlideInTransitionAnimator.swift in Sources */,
 				5CC1D8822C539FE0003448FE /* PhotoViewController.swift in Sources */,
 				5CE176112CAFD76800D50DDE /* SubscribeVideoModel.swift in Sources */,
 				5CE1761D2CB594A400D50DDE /* ContentTopViewModel.swift in Sources */,
 				5CC1D8872C539FE0003448FE /* NotificationCustomView.swift in Sources */,
 				5CC1D89D2C539FE0003448FE /* HomeViewController.swift in Sources */,
 				5CE176152CAFE7B200D50DDE /* SubscribeVideoViewModel.swift in Sources */,
+				5CE1762B2CBE6C1400D50DDE /* CustomPresentationController.swift in Sources */,
 				5CC1D89A2C539FE0003448FE /* SubscribeHoriCollectionView.swift in Sources */,
+				5CE1762D2CBEB65B00D50DDE /* MenuViewModel.swift in Sources */,
 				5C46FEEC2CA4763900950C64 /* NavButtonItemsViewModel.swift in Sources */,
 				5CC1D88D2C539FE0003448FE /* SearchViewController.swift in Sources */,
 				5CC1D84E2C539FD0003448FE /* VideosResponse.swift in Sources */,
 				5CC1D89B2C539FE0003448FE /* SubscribeSecItemView.swift in Sources */,
+				5CE1762F2CC0CAF400D50DDE /* ShortsViewModel.swift in Sources */,
 				5C46FEE22CA1ACD000950C64 /* APIService.swift in Sources */,
 				5CE176212CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift in Sources */,
 				5CE176072CAD297700D50DDE /* ShortsVideoModel.swift in Sources */,
@@ -448,6 +467,7 @@
 				5CC1D89F2C539FE0003448FE /* UIViewController+Additions.swift in Sources */,
 				5CC1D8812C539FE0003448FE /* MainTabBarController.swift in Sources */,
 				5CC1D8392C539F5A003448FE /* SceneDelegate.swift in Sources */,
+				5CE176272CBE342A00D50DDE /* SettingsViewController.swift in Sources */,
 				5CC1D88C2C539FE0003448FE /* MenuViewController.swift in Sources */,
 				5CC1D88E2C539FE0003448FE /* ShortsViewCell.swift in Sources */,
 				5CC1D8862C539FE0003448FE /* ContentTopView.swift in Sources */,

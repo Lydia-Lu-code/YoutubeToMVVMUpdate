@@ -2,9 +2,6 @@ import UIKit
 import WebKit
 
 class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, UIScrollViewDelegate {
-    func didTapFirstButton() {
-        print("第一個按鈕被點擊")
-    }
 
     private let subscribeViewModel: SubscribeViewModel
     private var singleVideoView = VideoView()
@@ -89,7 +86,6 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
         contentView.layoutIfNeeded()
         
         let totalHeight = contentView.frame.height
-        print("可滑動畫面的總高度: \(totalHeight)")
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -138,6 +134,7 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
         setupView()
         buttonCollectionCell.delegate = self
     }
+
 
     private func setupScrollView() {
         scrollView.delegate = self
@@ -312,3 +309,28 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
     }
 }
 
+extension SubscribeViewController: UIViewControllerTransitioningDelegate {
+    func didTapFirstButton() {
+        presentMenuViewController()
+    }
+    
+    func presentMenuViewController() {
+        let menuVC = MenuViewController()
+        menuVC.modalPresentationStyle = .custom
+        menuVC.transitioningDelegate = self
+        self.present(menuVC, animated: true) {
+        }
+    }
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return CustomPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SlideInTransitionAnimator(isPresenting: true)
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SlideInTransitionAnimator(isPresenting: false)
+    }
+}

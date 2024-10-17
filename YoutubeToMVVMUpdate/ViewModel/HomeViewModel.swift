@@ -55,5 +55,30 @@ class HomeViewModel {
         }
     }
     
+//    func didSelectVideo(_ videoViewModel: VideoViewModel) {
+//        videoViewModel.fetchDetailedInfo { [weak self] result in
+//            switch result {
+//            case .success(let detailedVideo):
+//                DispatchQueue.main.async {
+//                    let playerViewController = PlayerViewController(videoViewModel: videoViewModel)
+////                    self?.navigationController?.pushViewController(playerViewController, animated: true)
+//                }
+//            case .failure(let error):
+//                print("Error fetching detailed video info: \(error)")
+//                // 處理錯誤，例如顯示一個警告
+//            }
+//        }
+//    }
     
+    func didSelectVideo(_ video: VideoViewModel, completion: @escaping (VideoViewModel) -> Void) {
+        // 假設這裡有一些獲取詳細信息的邏輯
+        // 為了簡單起見，我們直接調用completion
+        completion(video)
+    }
+    
+//    func didSelectVideo(_ video: VideoViewModel, completion: @escaping (VideoViewModel) -> Void) {
+//        video.didSelectVideo { updatedVideo in
+//            completion(updatedVideo)
+//        }
+//    }
 }

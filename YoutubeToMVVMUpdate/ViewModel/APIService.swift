@@ -282,4 +282,105 @@ class APIService {
         }
     }
     
+    func fetchVideoDetails(videoID: String, completion: @escaping (Result<VideosItem, APIError>) -> Void) {
+        let baseURL = "https://www.googleapis.com/youtube/v3/videos"
+        
+        var components = URLComponents(string: baseURL)!
+        components.queryItems = [
+            URLQueryItem(name: "part", value: "snippet,statistics"),
+            URLQueryItem(name: "id", value: videoID),
+            URLQueryItem(name: "key", value: apiKey)
+        ]
+        
+        guard let url = components.url else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(.networkError(error)))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(.httpError((response as? HTTPURLResponse)?.statusCode ?? 0)))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            do {
+                let decodedResponse = try JSONDecoder().decode(VideosResponse.self, from: data)
+                if let videoItem = decodedResponse.items.first {
+                    completion(.success(videoItem))
+                } else {
+                    completion(.failure(.noData))
+                }
+            } catch {
+                completion(.failure(.decodingError(error)))
+            }
+        }.resume()
+    }
+    
+    func fetchDetailedVideoInfo(videoID: String, completion: @escaping (Result<VideoViewModel, APIError>) -> Void) {
+        let baseURL = "https://www.googleapis.com/youtube/v3/videos"
+        
+        var components = URLComponents(string: baseURL)!
+        components.queryItems = [
+            URLQueryItem(name: "part", value: "snippet,statistics"),
+            URLQueryItem(name: "id", value: videoID),
+            URLQueryItem(name: "key", value: apiKey)
+        ]
+        
+        guard let url = components.url else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(.networkError(error)))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(.httpError((response as? HTTPURLResponse)?.statusCode ?? 0)))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            do {
+                let decodedResponse = try JSONDecoder().decode(VideosResponse.self, from: data)
+                
+                if let videoItem = decodedResponse.items.first {
+                    let detailedVideo = VideoViewModel(
+                        title: videoItem.snippet.title,
+                        channelTitle: videoItem.snippet.channelTitle,
+                        thumbnailURL: videoItem.snippet.thumbnails.high.url,
+                        viewCount: videoItem.statistics?.viewCount,
+                        daysSinceUpload: nil,  // 這裡先設為 nil，讓 ViewModel 自己計算
+                        videoID: videoItem.id,
+                        accountImageURL: videoItem.snippet.thumbnails.high.url,
+                        publishedAt: videoItem.snippet.publishedAt
+                    )
+                
+                    completion(.success(detailedVideo))
+                } else {
+                    completion(.failure(.noData))
+                }
+            } catch {
+                completion(.failure(.decodingError(error)))
+            }
+        }.resume()
+    }
+    
+    
 }

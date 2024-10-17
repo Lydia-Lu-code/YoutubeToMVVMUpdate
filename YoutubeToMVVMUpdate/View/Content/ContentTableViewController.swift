@@ -7,17 +7,14 @@ class ContentTableViewController: UITableViewController {
     private let apiService = APIService()
     private var viewModel: ContentTableViewControllerViewModel!
     private var navButtonViewModel: NavButtonViewModel!
+    private var settingButton: UIBarButtonItem!
     
     // MARK: - Lifecycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViewModel()
-        setupTableView()
-        setupNavButtonItems()
-        updateTabBarAppearance()
-        
+        setupUI()
         loadVideos()
     }
     
@@ -30,6 +27,13 @@ class ContentTableViewController: UITableViewController {
         navButtonViewModel = NavButtonViewModel()
     }
     
+    private func setupUI() {
+        setupTableView()
+        setupNavButtonItems()
+        setupSettingButton()
+        updateTabBarAppearance()
+    }
+    
     private func setupTableView() {
         tableView.register(ContentTableViewCell.self, forCellReuseIdentifier: "ContentTableViewCell")
         tableView.register(ContentTopView.self, forHeaderFooterViewReuseIdentifier: "ContentTopView")
@@ -40,7 +44,7 @@ class ContentTableViewController: UITableViewController {
     }
     
     private func setupNavButtonItems() {
-        navigationItem.rightBarButtonItems = navButtonViewModel.buttonItems.enumerated().map { (index, item) in
+        let navButtons = navButtonViewModel.buttonItems.enumerated().map { (index, item) in
             let barButtonItem = UIBarButtonItem(image: UIImage(systemName: item.systemName),
                                                 style: .plain,
                                                 target: self,
@@ -48,7 +52,20 @@ class ContentTableViewController: UITableViewController {
             barButtonItem.tag = index
             return barButtonItem
         }
+        navigationItem.rightBarButtonItems = navButtons
     }
+    
+    private func setupSettingButton() {
+        settingButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(settingButtonTapped))
+        
+        if var rightBarButtonItems = navigationItem.rightBarButtonItems {
+            rightBarButtonItems.insert(settingButton, at: 0)  // 插入到數組的開頭
+            navigationItem.rightBarButtonItems = rightBarButtonItems
+        } else {
+            navigationItem.rightBarButtonItems = [settingButton]
+        }
+    }
+    
     
     private func updateTabBarAppearance() {
         if let tabBar = self.tabBarController?.tabBar {
@@ -104,13 +121,11 @@ class ContentTableViewController: UITableViewController {
                 break
             }
         } else {
-            // 數據還沒有加載完成，可以顯示一個加載指示器
             print("**數據還在加載中")
         }
         
         return cell
     }
-    
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
@@ -139,6 +154,25 @@ class ContentTableViewController: UITableViewController {
         guard let buttonItem = navButtonViewModel.buttonItem(at: sender.tag) else { return }
         let action = navButtonViewModel.handleAction(buttonItem.actionType)
         performNavButtonAction(action)
+    }
+    
+    @objc private func settingButtonTapped() {
+        let settingsVC = SettingsTableViewController(style: .insetGrouped)
+        settingsVC.title = "設定"
+        
+        let nav = UINavigationController(rootViewController: settingsVC)
+        nav.modalPresentationStyle = .fullScreen
+        nav.modalTransitionStyle = .coverVertical
+        
+        // 添加一個關閉按鈕
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissSettings))
+        settingsVC.navigationItem.leftBarButtonItem = closeButton
+        
+        present(nav, animated: true, completion: nil)
+    }
+    
+    @objc private func dismissSettings() {
+        dismiss(animated: true, completion: nil)
     }
     
     private func performNavButtonAction(_ action: NavButtonAction) {

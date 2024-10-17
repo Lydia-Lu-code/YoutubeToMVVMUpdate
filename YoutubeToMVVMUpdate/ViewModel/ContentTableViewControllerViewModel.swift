@@ -21,7 +21,6 @@ class ContentTableViewControllerViewModel {
         group.enter()
         loadVideosForSection(query: "T:Time", maxResults: 16) { [weak self] result in
             self?.handleVideoResult(result, for: 1)
-            print("**CELL == 0")
             group.leave()
         }
         
@@ -29,7 +28,6 @@ class ContentTableViewControllerViewModel {
         group.enter()
         loadVideosForSection(query: "TO DO ep.", maxResults: 16) { [weak self] result in
             self?.handleVideoResult(result, for: 2)
-            print("**CELL == 1")
             group.leave()
         }
         

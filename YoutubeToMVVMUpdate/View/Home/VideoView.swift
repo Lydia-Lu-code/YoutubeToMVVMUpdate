@@ -108,21 +108,33 @@ class VideoView: UIView {
         
         labelMidTitle.text = viewModel.title
         
-        // 使用空字符串作為預設值
-        let channelTitle = viewModel.channelTitle ?? ""
-        let viewCount = viewModel.viewCount ?? "0"
-        let daysSinceUpload = viewModel.daysSinceUpload ?? ""
+        // 初始設置
+        updateVideoInfo()
         
-        labelMidOther.text = "\(channelTitle) ‧ 觀看次數：\(viewCount) ‧ \(daysSinceUpload)"
+        // 加載詳細信息
+        viewModel.loadDetails(apiService: APIService()) { [weak self] in
+            DispatchQueue.main.async {
+                self?.updateVideoInfo()
+            }
+        }
         
         loadImage(from: viewModel.thumbnailURL) { [weak self] image in
             self?.videoImgView.image = image
         }
         
-        // 使用空字符串作為預設值
         loadImage(from: viewModel.accountImageURL ?? "") { [weak self] image in
             self?.photoImageView.image = image
         }
+    }
+    
+    private func updateVideoInfo() {
+        guard let viewModel = viewModel else { return }
+        
+        let channelTitle = viewModel.channelTitle
+        let viewCount = viewModel.viewCountText
+        let daysSinceUpload = viewModel.daysSinceUpload ?? "N/A"
+        
+        labelMidOther.text = "\(channelTitle) · \(viewCount)次觀看 · \(daysSinceUpload)"
     }
     
     private func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {

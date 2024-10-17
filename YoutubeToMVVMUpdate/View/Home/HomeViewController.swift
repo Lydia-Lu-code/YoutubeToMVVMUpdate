@@ -3,9 +3,6 @@ import UIKit
 import Foundation
 
 class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScrollViewDelegate {
-    func didTapFirstButton() {
-        print("第一個按鈕被點擊")
-    }
 
     private let homeViewModel: HomeViewModel
     private var singleVideoView = VideoView()
@@ -78,7 +75,8 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         contentView.layoutIfNeeded()
         
         let totalHeight = contentView.frame.height
-        print("可滑動畫面的總高度: \(totalHeight)")
+        
+        setupVideoTapGestures()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -88,7 +86,6 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     private func setupBindings() {
         homeViewModel.shortsVideos.bind { [weak self] videos in
             DispatchQueue.main.async {
-                print("Home Received \(videos.count) videos")
                 self?.shortsViewCell.viewModel = ViewCellViewModel(videoContents: videos)
             }
         }
@@ -292,5 +289,69 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         notificationLogVC.title = "通知"
         navigationController?.pushViewController(notificationLogVC, animated: true)
     }
+    
+    private func setupVideoTapGestures() {
+        let singleVideoTapGesture = UITapGestureRecognizer(target: self, action: #selector(videoTapped(_:)))
+        singleVideoView.addGestureRecognizer(singleVideoTapGesture)
+
+        for videoView in otherVideoViews {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(videoTapped(_:)))
+            videoView.addGestureRecognizer(tapGesture)
+        }
+    }
+    
+    @objc private func videoTapped(_ gesture: UITapGestureRecognizer) {
+        guard let videoView = gesture.view as? VideoView,
+              let viewModel = videoView.viewModel else { return }
+
+        homeViewModel.didSelectVideo(viewModel) { [weak self] selectedVideo in
+            DispatchQueue.main.async {
+                self?.navigateToPlayerViewController(with: selectedVideo)
+            }
+        }
+    }
+
+//    @objc private func videoTapped(_ gesture: UITapGestureRecognizer) {
+//        guard let videoView = gesture.view as? VideoView,
+//              let viewModel = videoView.viewModel else { return }
+//
+//        homeViewModel.didSelectVideo(viewModel) { [weak self] selectedVideo in
+//            self?.navigateToPlayerViewController(with: selectedVideo)
+//        }
+//    }
+
+    private func navigateToPlayerViewController(with video: VideoViewModel) {
+        let playerVC = PlayerViewController(videoViewModel: video)
+        navigationController?.pushViewController(playerVC, animated: true)
+    }
+    
 }
 
+extension HomeViewController: UIViewControllerTransitioningDelegate {
+    
+    func didTapFirstButton() {
+        presentMenuViewController()
+    }
+    
+    func presentMenuViewController() {
+        let menuVC = MenuViewController()
+        menuVC.modalPresentationStyle = .custom
+        menuVC.transitioningDelegate = self
+        self.present(menuVC, animated: true) {
+        }
+    }
+
+    
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return CustomPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SlideInTransitionAnimator(isPresenting: true)
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SlideInTransitionAnimator(isPresenting: false)
+    }
+}
