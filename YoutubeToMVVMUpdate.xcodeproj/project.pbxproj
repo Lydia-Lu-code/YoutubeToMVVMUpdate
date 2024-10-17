@@ -46,7 +46,6 @@
 		5CC1D89A2C539FE0003448FE /* SubscribeHoriCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8722C539FE0003448FE /* SubscribeHoriCollectionView.swift */; };
 		5CC1D89B2C539FE0003448FE /* SubscribeSecItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8732C539FE0003448FE /* SubscribeSecItemView.swift */; };
 		5CC1D89D2C539FE0003448FE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D8762C539FE0003448FE /* HomeViewController.swift */; };
-		5CC1D89F2C539FE0003448FE /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D87A2C539FE0003448FE /* UIViewController+Additions.swift */; };
 		5CC1D8A02C539FE0003448FE /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1D87C2C539FE0003448FE /* Observable.swift */; };
 		5CE176042CAAF23200D50DDE /* ShortsViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176032CAAF23200D50DDE /* ShortsViewCellViewModel.swift */; };
 		5CE176072CAD297700D50DDE /* ShortsVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176062CAD297700D50DDE /* ShortsVideoModel.swift */; };
@@ -111,7 +110,6 @@
 		5CC1D8722C539FE0003448FE /* SubscribeHoriCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeHoriCollectionView.swift; sourceTree = "<group>"; };
 		5CC1D8732C539FE0003448FE /* SubscribeSecItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeSecItemView.swift; sourceTree = "<group>"; };
 		5CC1D8762C539FE0003448FE /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		5CC1D87A2C539FE0003448FE /* UIViewController+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		5CC1D87C2C539FE0003448FE /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		5CE176032CAAF23200D50DDE /* ShortsViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsViewCellViewModel.swift; sourceTree = "<group>"; };
 		5CE176062CAD297700D50DDE /* ShortsVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsVideoModel.swift; sourceTree = "<group>"; };
@@ -170,8 +168,6 @@
 				5CC1D83F2C539F5B003448FE /* Assets.xcassets */,
 				5CC1D8412C539F5B003448FE /* LaunchScreen.storyboard */,
 				5CC1D8442C539F5B003448FE /* Info.plist */,
-				5CC1D87E2C539FE0003448FE /* Utilities */,
-				5CC1D8772C539FE0003448FE /* -View */,
 				5CC1D8522C539FE0003448FE /* View */,
 				5CC1D8792C539FE0003448FE /* ViewModel */,
 				5CC1D84C2C539FD0003448FE /* Model */,
@@ -198,6 +194,8 @@
 				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
 				5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */,
 				5CE176262CBE342A00D50DDE /* SettingsViewController.swift */,
+				5CC1D86C2C539FE0003448FE /* Player */,
+				5CE176052CAAFD0F00D50DDE /* Bind */,
 				5CC1D8592C539FE0003448FE /* Content */,
 				5CC1D8752C539FE0003448FE /* Subscribe */,
 				5CC1D8542C539FE0003448FE /* Add */,
@@ -222,6 +220,7 @@
 				5CC1D8562C539FE0003448FE /* ContentTableViewCell.swift */,
 				5CC1D8572C539FE0003448FE /* ContentTableViewController.swift */,
 				5CC1D8582C539FE0003448FE /* ContentTopView.swift */,
+				5CC1D8652C539FE0003448FE /* ConVideoFrameView.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -241,14 +240,6 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
-		5CC1D8692C539FE0003448FE /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				5CC1D8652C539FE0003448FE /* ConVideoFrameView.swift */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
 		5CC1D86C2C539FE0003448FE /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,16 +257,6 @@
 				5CE1760E2CAFD6C600D50DDE /* SubscribeViewController.swift */,
 			);
 			path = Subscribe;
-			sourceTree = "<group>";
-		};
-		5CC1D8772C539FE0003448FE /* -View */ = {
-			isa = PBXGroup;
-			children = (
-				5CC1D8692C539FE0003448FE /* Other */,
-				5CC1D86C2C539FE0003448FE /* Player */,
-				5CE176052CAAFD0F00D50DDE /* Bind */,
-			);
-			path = "-View";
 			sourceTree = "<group>";
 		};
 		5CC1D8792C539FE0003448FE /* ViewModel */ = {
@@ -299,22 +280,6 @@
 				5CE1762E2CC0CAF400D50DDE /* ShortsViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		5CC1D87B2C539FE0003448FE /* Additions */ = {
-			isa = PBXGroup;
-			children = (
-				5CC1D87A2C539FE0003448FE /* UIViewController+Additions.swift */,
-			);
-			path = Additions;
-			sourceTree = "<group>";
-		};
-		5CC1D87E2C539FE0003448FE /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				5CC1D87B2C539FE0003448FE /* Additions */,
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 		5CE176052CAAFD0F00D50DDE /* Bind */ = {
@@ -464,7 +429,6 @@
 				5CC1D8892C539FE0003448FE /* NotificationTableViewCell.swift in Sources */,
 				5CE176192CB4D09900D50DDE /* VideoViewModel.swift in Sources */,
 				5CC1D8882C539FE0003448FE /* NotificationLogVC.swift in Sources */,
-				5CC1D89F2C539FE0003448FE /* UIViewController+Additions.swift in Sources */,
 				5CC1D8812C539FE0003448FE /* MainTabBarController.swift in Sources */,
 				5CC1D8392C539F5A003448FE /* SceneDelegate.swift in Sources */,
 				5CE176272CBE342A00D50DDE /* SettingsViewController.swift in Sources */,
