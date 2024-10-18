@@ -8,7 +8,7 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Properties
     
     private let videoViewModel: VideoViewModel
-    private var relatedVideos: [VideoViewModel] = []
+//    private var relatedVideos: [VideoViewModel] = []
     private let subscribeHoriCollectionView = SubscribeHoriCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var shortsViewModel: ShortsViewModel!
     
@@ -127,7 +127,10 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
          fetchAdditionalData()
          hideNavigationElements()
          
-         setupShortsViewModel()
+//         setupShortsViewModel()
+        setupShortsViewModel {
+            self.tableView.reloadData()
+        }
         
         setupVideoViews()
         loadAdditionalVideos()
@@ -144,10 +147,10 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        checkWhiteBackgroundViews(in: view)
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        checkWhiteBackgroundViews(in: view)
+//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -294,15 +297,15 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         subscribeHoriCollectionView.reloadData()
     }
     
-    private func checkWhiteBackgroundViews(in view: UIView) {
-        if view.backgroundColor == .white {
-            print("白色背景元件: \(type(of: view)), Frame: \(view.frame)")
-        }
-        
-        for subview in view.subviews {
-            checkWhiteBackgroundViews(in: subview)
-        }
-    }
+//    private func checkWhiteBackgroundViews(in view: UIView) {
+//        if view.backgroundColor == .white {
+//            print("白色背景元件: \(type(of: view)), Frame: \(view.frame)")
+//        }
+//        
+//        for subview in view.subviews {
+//            checkWhiteBackgroundViews(in: subview)
+//        }
+//    }
 
     
     
@@ -386,13 +389,15 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         overrideUserInterfaceStyle = .dark  // 或 .light，取決於你想要的背景顏色
     }
   
-    private func setupShortsViewModel() {
+    private func setupShortsViewModel(completion: @escaping () -> Void) {
         shortsViewModel = ShortsViewModel()
         shortsViewModel.shortsVideos.bind { [weak self] _ in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
         }
+//        shortsViewModel.loadShortsVideos()
+        
         shortsViewModel.loadShortsVideos()
     }
 
@@ -400,9 +405,9 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return shortsViewModel.shortsTitle
     }
 
-    private func updateShortsLabel() {
-        shortsLbl.text = shortsViewModel.shortsTitle
-    }
+//    private func updateShortsLabel() {
+//        shortsLbl.text = shortsViewModel.shortsTitle
+//    }
     
 
     // 覆蓋這個方法來控制狀態欄的可見性
@@ -634,10 +639,10 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
        }
 
-    
-    private func configureRelatedVideoCell(_ cell: PlayerTableViewCell) {
-        // Configure related video cell
-    }
+//    
+//    private func configureRelatedVideoCell(_ cell: PlayerTableViewCell) {
+//        // Configure related video cell
+//    }
     
     // MARK: - ButtonCollectionCellDelegate
     

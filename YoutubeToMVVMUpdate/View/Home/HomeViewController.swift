@@ -72,9 +72,6 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         setupBindings()
         homeViewModel.loadVideos()
         updateShortsLabel()
-        contentView.layoutIfNeeded()
-        
-        let totalHeight = contentView.frame.height
         
         setupVideoTapGestures()
     }
@@ -86,7 +83,7 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
     private func setupBindings() {
         homeViewModel.shortsVideos.bind { [weak self] videos in
             DispatchQueue.main.async {
-                self?.shortsViewCell.viewModel = ViewCellViewModel(videoContents: videos)
+                self?.shortsViewCell.viewModel = ShortsViewCellViewModel(videoContents: videos)
             }
         }
         
@@ -310,15 +307,6 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
             }
         }
     }
-
-//    @objc private func videoTapped(_ gesture: UITapGestureRecognizer) {
-//        guard let videoView = gesture.view as? VideoView,
-//              let viewModel = videoView.viewModel else { return }
-//
-//        homeViewModel.didSelectVideo(viewModel) { [weak self] selectedVideo in
-//            self?.navigateToPlayerViewController(with: selectedVideo)
-//        }
-//    }
 
     private func navigateToPlayerViewController(with video: VideoViewModel) {
         let playerVC = PlayerViewController(videoViewModel: video)

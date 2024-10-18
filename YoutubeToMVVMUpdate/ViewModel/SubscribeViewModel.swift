@@ -60,10 +60,4 @@ class SubscribeViewModel {
             self.errorMessage.value = error.localizedDescription
         }
     }
-    
-    func didSelectVideo(_ video: VideoViewModel, completion: @escaping (VideoViewModel) -> Void) {
-        video.didSelectVideo { updatedVideo in
-            completion(updatedVideo)
-        }
-    }
 }

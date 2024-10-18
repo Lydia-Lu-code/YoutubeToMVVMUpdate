@@ -85,7 +85,6 @@ class SubscribeViewController: UIViewController, ButtonCollectionCellDelegate, U
         
         contentView.layoutIfNeeded()
         
-        let totalHeight = contentView.frame.height
     }
     
     override var prefersStatusBarHidden: Bool {

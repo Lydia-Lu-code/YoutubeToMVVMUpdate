@@ -21,7 +21,7 @@ class ShortsViewModel {
         self.apiService = apiService
     }
     
-    func loadShortsVideos() {
+    func loadShortsVideos(completion: (() -> Void)? = nil) {
         apiService.fetchVideosSubscribe(query: "K-pop Top 2024 Shorts", maxResults: 16) { [weak self] result in
             switch result {
             case .success(let videos):
@@ -30,8 +30,21 @@ class ShortsViewModel {
             case .failure(let error):
                 self?.errorMessage.value = error.localizedDescription
             }
+            completion?()
         }
     }
+    
+//    func loadShortsVideos(completion: @escaping () -> Void) {
+//        apiService.fetchVideosSubscribe(query: "K-pop Top 2024 Shorts", maxResults: 16) { [weak self] result in
+//            switch result {
+//            case .success(let videos):
+//                let viewModels = videos.map { VideoViewModel(videoModel: $0) }
+//                self?.shortsVideos.value = viewModels
+//            case .failure(let error):
+//                self?.errorMessage.value = error.localizedDescription
+//            }
+//        }
+//    }
     
     func didSelectVideo(_ video: VideoViewModel, completion: @escaping (VideoViewModel) -> Void) {
         video.didSelectVideo { updatedVideo in

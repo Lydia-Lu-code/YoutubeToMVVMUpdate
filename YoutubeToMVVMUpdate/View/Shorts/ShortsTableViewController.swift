@@ -91,11 +91,6 @@ class ShortsTableViewController: UITableViewController {
         }
     }
     
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageIndex = Int(scrollView.contentOffset.y / scrollView.bounds.height)
-        print("Scrolled to page: \(pageIndex)")
-    }
-    
     private func alignToNearestCell() {
         let cellHeight = tableView.rowHeight
         let offsetY = tableView.contentOffset.y + tableView.contentInset.top

@@ -88,10 +88,7 @@ class ShortsEmojiBtnView: UIView {
         }
     }
 
-    
-    func configure(with video: ShortsVideoModel) {
-        // 如果需要根據視頻數據更新按鈕，可以在這裡實現
-    }
+
 }
 
 

@@ -66,7 +66,6 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupGestures()
         setupNavigationBar()
         
-//        view.backgroundColor = .white
     }
     
     private func setupTableView() {

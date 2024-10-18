@@ -26,21 +26,21 @@ class PlayerTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var buttonCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
+//    private lazy var buttonCollectionView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .horizontal
+//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        collectionView.translatesAutoresizingMaskIntoConstraints = false
+//        return collectionView
+//    }()
 
-    private let commentTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "輸入留言"
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+//    private let commentTextField: UITextField = {
+//        let textField = UITextField()
+//        textField.placeholder = "輸入留言"
+//        textField.borderStyle = .roundedRect
+//        textField.translatesAutoresizingMaskIntoConstraints = false
+//        return textField
+//    }()
 
 
 
@@ -91,22 +91,22 @@ class PlayerTableViewCell: UITableViewCell {
         }
     }
     
-    // ... 其他 UI 元素 ...
-
-    func configureChannelInfo(with viewModel: VideoViewModel) {
-        // 配置頻道信息
-    }
-
-    func configureButtonCollection(with buttonTitles: [String]) {
-        // 配置按鈕集合
-    }
-
-    func configureCommentInput() {
-        // 配置留言輸入
-    }
-
-    func configureShorts(with shortsViewModel: ShortsViewModel) {
-        // 配置 Shorts
-    }
+//    // ... 其他 UI 元素 ...
+//
+//    func configureChannelInfo(with viewModel: VideoViewModel) {
+//        // 配置頻道信息
+//    }
+//
+//    func configureButtonCollection(with buttonTitles: [String]) {
+//        // 配置按鈕集合
+//    }
+//
+//    func configureCommentInput() {
+//        // 配置留言輸入
+//    }
+//
+//    func configureShorts(with shortsViewModel: ShortsViewModel) {
+//        // 配置 Shorts
+//    }
 
 }

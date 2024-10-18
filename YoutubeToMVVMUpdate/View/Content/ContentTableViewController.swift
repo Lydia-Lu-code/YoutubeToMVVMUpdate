@@ -85,7 +85,6 @@ class ContentTableViewController: UITableViewController {
         viewModel.loadAllVideos { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
-                print("**表格重新加載")
             }
         }
     }
@@ -105,28 +104,10 @@ class ContentTableViewController: UITableViewController {
             return UITableViewCell()
         }
         
-        if viewModel.isDataLoadedForSection(indexPath.section) {
-            switch indexPath.section {
-            case 1: // "播放清單" section
-                if let sectionViewModel = viewModel.viewModelForSection(0) {
-                    cell.viewModel = sectionViewModel
-                    print("**設置 section 1 的數據")
-                }
-            case 2: // "你的影片" section
-                if let sectionViewModel = viewModel.viewModelForSection(1) {
-                    cell.viewModel = sectionViewModel
-                    print("**設置 section 2 的數據")
-                }
-            default:
-                break
-            }
-        } else {
-            print("**數據還在加載中")
-        }
-        
+        viewModel.configureCell(cell, forRowAt: indexPath)
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             let contentTopView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ContentTopView") as? ContentTopView
@@ -135,10 +116,11 @@ class ContentTableViewController: UITableViewController {
         } else {
             let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ContentHeaderView") as? ContentHeaderView
             headerView?.delegate = self
-            headerView?.configure(leftTitle: viewModel.titleForSection(section), rightTitle: section == 1 || section == 2 ? "查看全部" : "")
+            viewModel.configureHeaderView(headerView!, forSection: section)
             return headerView
         }
     }
+    
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 150 : 45

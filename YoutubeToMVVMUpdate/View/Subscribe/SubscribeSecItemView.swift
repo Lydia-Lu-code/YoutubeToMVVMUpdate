@@ -32,7 +32,7 @@ class SubscribeSecItemView: UIView {
             // 設置文字的上邊距，使其顯示在圖片的下方
             let spacing: CGFloat = 15
 
-            button.titleEdgeInsets = UIEdgeInsets(top: imageSize.height + spacing, left: -imageSize.width , bottom: 0, right: 0)
+//            button.titleEdgeInsets = UIEdgeInsets(top: imageSize.height + spacing, left: -imageSize.width , bottom: 0, right: 0)
             
             // 設置文字顏色
             button.setTitleColor(.label, for: .normal)

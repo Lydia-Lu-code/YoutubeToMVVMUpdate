@@ -96,23 +96,7 @@ class ShortsCollectionViewCell: UICollectionViewCell {
         if let url = URL(string: videoViewModel.thumbnailURL) {
             setImage(from: url)
         }
-        
-        
-        func configureWithHomeVideo(_ video: HomeVideoModel) {
-            // 配置 UI 元素使用 HomeVideoModel 的屬性
-        }
-        
-        func configureWithSubscribeVideo(_ video: SubscribeVideoModel) {
-            // 配置 UI 元素使用 SubscribeVideoModel 的屬性
-        }
+
     }
 }
 
-extension ShortsCollectionViewCell {
-    func configure(with videoContent: HomeVideoModel) {
-        titleLabel.text = videoContent.title
-        if let url = URL(string: videoContent.thumbnailURL) {
-            setImage(from: url)
-        }
-    }
-}

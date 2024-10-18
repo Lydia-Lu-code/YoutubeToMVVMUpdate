@@ -25,7 +25,6 @@ class NotificationLogVC: UIViewController {
     }()
     
     let buttonTitles = ["﻿全部","「提及」的通知"]
-    var navButtonItems: NavButtonItems!
 
     
     override func viewDidLoad() {

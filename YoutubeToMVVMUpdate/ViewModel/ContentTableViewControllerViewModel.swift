@@ -78,4 +78,38 @@ class ContentTableViewControllerViewModel {
     func titleForSection(_ section: Int) -> String {
         return sections[section]
     }
+    
+    func loadVideos(completion: @escaping () -> Void) {
+        loadAllVideos { [weak self] in
+            self?.updateDataLoadedStatus()
+            completion()
+        }
+    }
+
+    private func updateDataLoadedStatus() {
+        // 更新數據加載狀態的邏輯
+    }
+
+
+    func configureCell(_ cell: ContentTableViewCell, forRowAt indexPath: IndexPath) {
+        if isDataLoadedForSection(indexPath.section) {
+            switch indexPath.section {
+            case 1: // "播放清單" section
+                if let sectionViewModel = viewModelForSection(0) {
+                    cell.viewModel = sectionViewModel
+                }
+            case 2: // "你的影片" section
+                if let sectionViewModel = viewModelForSection(1) {
+                    cell.viewModel = sectionViewModel
+                }
+            default:
+                break
+            }
+        }
+    }
+
+    func configureHeaderView(_ headerView: ContentHeaderView, forSection section: Int) {
+        headerView.configure(leftTitle: titleForSection(section), rightTitle: section == 1 || section == 2 ? "查看全部" : "")
+    }
 }
+

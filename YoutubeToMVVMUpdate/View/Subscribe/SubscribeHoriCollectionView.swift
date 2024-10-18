@@ -4,8 +4,6 @@ class SubscribeHoriCollectionView: UICollectionView, UICollectionViewDelegate, U
 
     var videoViewModels: [VideoViewModel] = []
     
-    var subVideoContents: [SubscribeVideoModel] = []
-    var welcome: SearchResponse?
     static let identifier = "SubscribeHoriCollectionView"
       
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -30,13 +28,6 @@ class SubscribeHoriCollectionView: UICollectionView, UICollectionViewDelegate, U
         self.register(ShortsCollectionViewCell.self, forCellWithReuseIdentifier: SubscribeHoriCollectionView.identifier)
         self.showsHorizontalScrollIndicator = false
     }
-
-//    private func commonInit() {
-//        self.isScrollEnabled = true
-//        self.delegate = self
-//        self.dataSource = self
-//        self.register(ShortsCollectionViewCell.self, forCellWithReuseIdentifier: SubscribeHoriCollectionView.identifier)
-//    }
 
     // MARK: - UICollectionViewDataSource
     

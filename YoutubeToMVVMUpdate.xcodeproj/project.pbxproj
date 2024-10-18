@@ -56,7 +56,6 @@
 		5CE176132CAFD95900D50DDE /* SubscribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */; };
 		5CE176152CAFE7B200D50DDE /* SubscribeVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */; };
 		5CE176192CB4D09900D50DDE /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176182CB4D09900D50DDE /* VideoViewModel.swift */; };
-		5CE1761B2CB538D400D50DDE /* ViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */; };
 		5CE1761D2CB594A400D50DDE /* ContentTopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761C2CB594A400D50DDE /* ContentTopViewModel.swift */; };
 		5CE1761F2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */; };
 		5CE176212CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */; };
@@ -66,6 +65,7 @@
 		5CE1762B2CBE6C1400D50DDE /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1762A2CBE6C1400D50DDE /* CustomPresentationController.swift */; };
 		5CE1762D2CBEB65B00D50DDE /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1762C2CBEB65B00D50DDE /* MenuViewModel.swift */; };
 		5CE1762F2CC0CAF400D50DDE /* ShortsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1762E2CC0CAF400D50DDE /* ShortsViewModel.swift */; };
+		5CE176312CC21B7A00D50DDE /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176302CC21B7A00D50DDE /* PlayerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,7 +120,6 @@
 		5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewModel.swift; sourceTree = "<group>"; };
 		5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeVideoViewModel.swift; sourceTree = "<group>"; };
 		5CE176182CB4D09900D50DDE /* VideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
-		5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCellViewModel.swift; sourceTree = "<group>"; };
 		5CE1761C2CB594A400D50DDE /* ContentTopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTopViewModel.swift; sourceTree = "<group>"; };
 		5CE1761E2CB5959B00D50DDE /* ContentTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		5CE176202CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewControllerViewModel.swift; sourceTree = "<group>"; };
@@ -130,6 +129,7 @@
 		5CE1762A2CBE6C1400D50DDE /* CustomPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationController.swift; sourceTree = "<group>"; };
 		5CE1762C2CBEB65B00D50DDE /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
 		5CE1762E2CC0CAF400D50DDE /* ShortsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsViewModel.swift; sourceTree = "<group>"; };
+		5CE176302CC21B7A00D50DDE /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,16 +191,16 @@
 		5CC1D8522C539FE0003448FE /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
-				5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */,
-				5CE176262CBE342A00D50DDE /* SettingsViewController.swift */,
 				5CC1D86C2C539FE0003448FE /* Player */,
 				5CE176052CAAFD0F00D50DDE /* Bind */,
 				5CC1D8592C539FE0003448FE /* Content */,
 				5CC1D8752C539FE0003448FE /* Subscribe */,
 				5CC1D8542C539FE0003448FE /* Add */,
-				5CE1760A2CAD913600D50DDE /* Home */,
 				5CE1760B2CAD914B00D50DDE /* Shorts */,
+				5CE1760A2CAD913600D50DDE /* Home */,
+				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
+				5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */,
+				5CE176262CBE342A00D50DDE /* SettingsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -218,9 +218,9 @@
 			children = (
 				5CC1D8552C539FE0003448FE /* ContentHeaderView.swift */,
 				5CC1D8562C539FE0003448FE /* ContentTableViewCell.swift */,
-				5CC1D8572C539FE0003448FE /* ContentTableViewController.swift */,
 				5CC1D8582C539FE0003448FE /* ContentTopView.swift */,
 				5CC1D8652C539FE0003448FE /* ConVideoFrameView.swift */,
+				5CC1D8572C539FE0003448FE /* ContentTableViewController.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -267,7 +267,6 @@
 				5C46FEE72CA1D0EA00950C64 /* HomeVideoViewModel.swift */,
 				5C46FF252CA7F81E00950C64 /* HomeViewModel.swift */,
 				5C46FEEB2CA4763900950C64 /* NavButtonItemsViewModel.swift */,
-				5CE1761A2CB538D400D50DDE /* ViewCellViewModel.swift */,
 				5CE176032CAAF23200D50DDE /* ShortsViewCellViewModel.swift */,
 				5CE176082CAD29B400D50DDE /* ShortsListViewModel.swift */,
 				5CE176142CAFE7B200D50DDE /* SubscribeVideoViewModel.swift */,
@@ -278,6 +277,7 @@
 				5CE176222CB666CB00D50DDE /* NavButtonViewModel.swift */,
 				5CE1762C2CBEB65B00D50DDE /* MenuViewModel.swift */,
 				5CE1762E2CC0CAF400D50DDE /* ShortsViewModel.swift */,
+				5CE176302CC21B7A00D50DDE /* PlayerViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -306,10 +306,10 @@
 		5CE1760B2CAD914B00D50DDE /* Shorts */ = {
 			isa = PBXGroup;
 			children = (
-				5CC1D8702C539FE0003448FE /* ShortsTableViewController.swift */,
 				5CC1D86F2C539FE0003448FE /* ShortsTableViewCell.swift */,
 				5CC1D86D2C539FE0003448FE /* ShortsBtnView.swift */,
 				5CC1D86E2C539FE0003448FE /* ShortsEmojiBtnView.swift */,
+				5CC1D8702C539FE0003448FE /* ShortsTableViewController.swift */,
 			);
 			path = Shorts;
 			sourceTree = "<group>";
@@ -389,11 +389,11 @@
 				5CC1D8962C539FE0003448FE /* ShortsBtnView.swift in Sources */,
 				5CC1D8852C539FE0003448FE /* ContentTableViewController.swift in Sources */,
 				5CE176132CAFD95900D50DDE /* SubscribeViewModel.swift in Sources */,
-				5CE1761B2CB538D400D50DDE /* ViewCellViewModel.swift in Sources */,
 				5C46FF262CA7F81E00950C64 /* HomeViewModel.swift in Sources */,
 				5CE176292CBE6BDC00D50DDE /* SlideInTransitionAnimator.swift in Sources */,
 				5CC1D8822C539FE0003448FE /* PhotoViewController.swift in Sources */,
 				5CE176112CAFD76800D50DDE /* SubscribeVideoModel.swift in Sources */,
+				5CE176312CC21B7A00D50DDE /* PlayerViewModel.swift in Sources */,
 				5CE1761D2CB594A400D50DDE /* ContentTopViewModel.swift in Sources */,
 				5CC1D8872C539FE0003448FE /* NotificationCustomView.swift in Sources */,
 				5CC1D89D2C539FE0003448FE /* HomeViewController.swift in Sources */,
