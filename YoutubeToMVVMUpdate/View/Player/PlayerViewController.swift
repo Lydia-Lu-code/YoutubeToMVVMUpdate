@@ -8,7 +8,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Properties
     
     private let videoViewModel: VideoViewModel
-//    private var relatedVideos: [VideoViewModel] = []
     private let subscribeHoriCollectionView = SubscribeHoriCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var shortsViewModel: ShortsViewModel!
     
