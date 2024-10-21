@@ -41,7 +41,8 @@ class SubscribeHoriCollectionView: UICollectionView, UICollectionViewDelegate, U
         let videoViewModel = videoViewModels[indexPath.item]
         cell.titleLabel.text = videoViewModel.title
         if let url = URL(string: videoViewModel.thumbnailURL) {
-            cell.setImage(from: url)
+//            cell.setImage(from: url)
+            cell.configure(with: videoViewModel)
         }
         
         return cell

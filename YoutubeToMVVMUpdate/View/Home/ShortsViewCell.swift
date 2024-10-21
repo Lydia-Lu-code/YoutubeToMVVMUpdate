@@ -44,6 +44,11 @@ class ShortsViewCell: UICollectionViewCell {
     private func updateUI() {
         collectionView.reloadData()
     }
+    
+    func updateShortsList(_ shorts: [VideoViewModel]) {
+        viewModel = ShortsViewCellViewModel(videoContents: shorts)
+        updateUI()
+    }
 }
 
 extension ShortsViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

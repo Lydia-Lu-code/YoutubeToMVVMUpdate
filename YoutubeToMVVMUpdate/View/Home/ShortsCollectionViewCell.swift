@@ -1,31 +1,35 @@
-
 import UIKit
 
 class ShortsCollectionViewCell: UICollectionViewCell {
     
-    public static let cellIdentifier = "ShortsCollectionViewCell"
+    static let cellIdentifier = "ShortsCollectionViewCell"
     
-    let button: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.black, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageView?.contentMode = .scaleAspectFill
-        return button
+    private let containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
-    // 添加圖像視圖
-    let imageView: UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(systemName: "ellipsis") // 使用三個點符號作為示意圖
-        image.contentMode = .scaleAspectFit
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image // 返回創建的圖像視圖實例
+    private let thumbnailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
+    private let optionsImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "ellipsis")
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    // 將 titleLabel 改為 internal 訪問級別
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.text = "Placeholder"
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -33,70 +37,71 @@ class ShortsCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setButton()
+        commonInit()
     }
  
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setButton()
+        commonInit()
     }
-
-    public func setButton() {
-        contentView.addSubview(button)
-        button.addSubview(imageView)
-        button.addSubview(titleLabel)
-        
-        // 設置圖像視圖和標籤的約束
+    
+    private func commonInit() {
+        setupViews()
+        setupConstraints()
+    }
+    
+    private func setupViews() {
+        contentView.addSubview(containerView)
+        containerView.addSubview(thumbnailImageView)
+        containerView.addSubview(optionsImageView)
+        containerView.addSubview(titleLabel)
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // 圖像視圖約束
-            imageView.topAnchor.constraint(equalTo: button.topAnchor, constant: 12),
-            imageView.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -17),
-            imageView.widthAnchor.constraint(equalToConstant: 20),
-            imageView.heightAnchor.constraint(equalToConstant: 20),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
-            // 標籤約束
-            titleLabel.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -12),
-            titleLabel.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -12),
-            titleLabel.heightAnchor.constraint(equalToConstant: 40), // 設置標籤的高度為40
+            thumbnailImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            thumbnailImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            thumbnailImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            thumbnailImageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -8),
             
-            button.topAnchor.constraint(equalTo: contentView.topAnchor),
-            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            optionsImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
+            optionsImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            optionsImageView.widthAnchor.constraint(equalToConstant: 20),
+            optionsImageView.heightAnchor.constraint(equalToConstant: 20),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            titleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
+            titleLabel.heightAnchor.constraint(equalToConstant: 40)
         ])
-
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.layer.cornerRadius = 20
-        self.layer.masksToBounds = true
+        layer.cornerRadius = 20
+        layer.masksToBounds = true
     }
     
-    public func setImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if error != nil {
-                return
-            }
-            guard let data = data, let image = UIImage(data: data) else {
-                return
-            }
-            
+    private func setThumbnailImage(from url: URL) {
+        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let self = self, let data = data, error == nil else { return }
             DispatchQueue.main.async {
-                self.button.setImage(image, for: .normal)
+                self.thumbnailImageView.image = UIImage(data: data)
             }
         }.resume()
     }
     
-    
     func configure(with videoViewModel: VideoViewModel) {
-        print("Configuring ShortsCollectionViewCell with VideoViewModel")
         titleLabel.text = videoViewModel.title
         if let url = URL(string: videoViewModel.thumbnailURL) {
-            setImage(from: url)
+            setThumbnailImage(from: url)
         }
-
     }
+    
 }
 

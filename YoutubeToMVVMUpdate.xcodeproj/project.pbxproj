@@ -292,8 +292,8 @@
 			children = (
 				5CC1D85E2C539FE0003448FE /* Notification */,
 				5CC1D8762C539FE0003448FE /* HomeViewController.swift */,
-				5CC1D8622C539FE0003448FE /* ShortsViewCell.swift */,
 				5CC1D8642C539FE0003448FE /* ButtonCollectionViewCell.swift */,
+				5CC1D8622C539FE0003448FE /* ShortsViewCell.swift */,
 				5CC1D8672C539FE0003448FE /* ShortsCollectionViewCell.swift */,
 				5CC1D8682C539FE0003448FE /* VideoView.swift */,
 			);
