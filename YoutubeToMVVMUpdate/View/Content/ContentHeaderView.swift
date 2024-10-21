@@ -12,6 +12,7 @@ class ContentHeaderView: UITableViewHeaderFooterView {
     private let leftButton: UIButton = {
         let button = UIButton()
         button.setTitle("Left Button", for: .normal)
+        button.setTitleColor(.label, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -19,6 +20,7 @@ class ContentHeaderView: UITableViewHeaderFooterView {
     private let rightButton: UIButton = {
         let button = UIButton()
         button.setTitle("Right Button", for: .normal)
+        button.setTitleColor(.label, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

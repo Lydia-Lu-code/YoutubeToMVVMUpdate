@@ -50,7 +50,6 @@
 		5CE176042CAAF23200D50DDE /* ShortsViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176032CAAF23200D50DDE /* ShortsViewCellViewModel.swift */; };
 		5CE176072CAD297700D50DDE /* ShortsVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176062CAD297700D50DDE /* ShortsVideoModel.swift */; };
 		5CE176092CAD29B400D50DDE /* ShortsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176082CAD29B400D50DDE /* ShortsListViewModel.swift */; };
-		5CE1760D2CAED49E00D50DDE /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */; };
 		5CE1760F2CAFD6C600D50DDE /* SubscribeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE1760E2CAFD6C600D50DDE /* SubscribeViewController.swift */; };
 		5CE176112CAFD76800D50DDE /* SubscribeVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176102CAFD76800D50DDE /* SubscribeVideoModel.swift */; };
 		5CE176132CAFD95900D50DDE /* SubscribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */; };
@@ -114,7 +113,6 @@
 		5CE176032CAAF23200D50DDE /* ShortsViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsViewCellViewModel.swift; sourceTree = "<group>"; };
 		5CE176062CAD297700D50DDE /* ShortsVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsVideoModel.swift; sourceTree = "<group>"; };
 		5CE176082CAD29B400D50DDE /* ShortsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortsListViewModel.swift; sourceTree = "<group>"; };
-		5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		5CE1760E2CAFD6C600D50DDE /* SubscribeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewController.swift; sourceTree = "<group>"; };
 		5CE176102CAFD76800D50DDE /* SubscribeVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeVideoModel.swift; sourceTree = "<group>"; };
 		5CE176122CAFD95900D50DDE /* SubscribeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewModel.swift; sourceTree = "<group>"; };
@@ -168,6 +166,7 @@
 				5CC1D83F2C539F5B003448FE /* Assets.xcassets */,
 				5CC1D8412C539F5B003448FE /* LaunchScreen.storyboard */,
 				5CC1D8442C539F5B003448FE /* Info.plist */,
+				5CE176052CAAFD0F00D50DDE /* Networking */,
 				5CC1D8522C539FE0003448FE /* View */,
 				5CC1D8792C539FE0003448FE /* ViewModel */,
 				5CC1D84C2C539FD0003448FE /* Model */,
@@ -191,16 +190,14 @@
 		5CC1D8522C539FE0003448FE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
+				5CE176262CBE342A00D50DDE /* SettingsViewController.swift */,
 				5CC1D86C2C539FE0003448FE /* Player */,
-				5CE176052CAAFD0F00D50DDE /* Bind */,
 				5CC1D8592C539FE0003448FE /* Content */,
 				5CC1D8752C539FE0003448FE /* Subscribe */,
 				5CC1D8542C539FE0003448FE /* Add */,
 				5CE1760B2CAD914B00D50DDE /* Shorts */,
 				5CE1760A2CAD913600D50DDE /* Home */,
-				5CC1D8512C539FE0003448FE /* MainTabBarController.swift */,
-				5CE1760C2CAED49E00D50DDE /* BaseViewController.swift */,
-				5CE176262CBE342A00D50DDE /* SettingsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -262,7 +259,6 @@
 		5CC1D8792C539FE0003448FE /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				5C46FEE12CA1ACD000950C64 /* APIService.swift */,
 				5CE176182CB4D09900D50DDE /* VideoViewModel.swift */,
 				5C46FEE72CA1D0EA00950C64 /* HomeVideoViewModel.swift */,
 				5C46FF252CA7F81E00950C64 /* HomeViewModel.swift */,
@@ -282,12 +278,13 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		5CE176052CAAFD0F00D50DDE /* Bind */ = {
+		5CE176052CAAFD0F00D50DDE /* Networking */ = {
 			isa = PBXGroup;
 			children = (
 				5CC1D87C2C539FE0003448FE /* Observable.swift */,
+				5C46FEE12CA1ACD000950C64 /* APIService.swift */,
 			);
-			path = Bind;
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		5CE1760A2CAD913600D50DDE /* Home */ = {
@@ -410,7 +407,6 @@
 				5CE176212CB5970B00D50DDE /* ContentTableViewControllerViewModel.swift in Sources */,
 				5CE176072CAD297700D50DDE /* ShortsVideoModel.swift in Sources */,
 				5CC1D8942C539FE0003448FE /* PlayerTableViewCell.swift in Sources */,
-				5CE1760D2CAED49E00D50DDE /* BaseViewController.swift in Sources */,
 				5CC1D8912C539FE0003448FE /* NavButtonItems.swift in Sources */,
 				5CC1D8372C539F5A003448FE /* AppDelegate.swift in Sources */,
 				5CE176092CAD29B400D50DDE /* ShortsListViewModel.swift in Sources */,

@@ -60,7 +60,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         let width = screenWidth * 0.75
         
         view.frame = CGRect(x: 0, y: 0, width: width, height: 0)
-        view.backgroundColor = greyColor
+//        view.backgroundColor = greyColor
         
         setupTableView()
         setupGestures()
@@ -72,7 +72,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = greyColor
+//        tableView.backgroundColor = greyColor
         tableView.isScrollEnabled = true
         
         NSLayoutConstraint.activate([
@@ -126,10 +126,10 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         let menuItem = output.menuItems[indexPath.row]
         
         cell.textLabel?.text = menuItem.rawValue
-        cell.textLabel?.textColor = .white
+//        cell.textLabel?.textColor = .white
         cell.imageView?.image = UIImage(systemName: menuItem.imageName)
-        cell.imageView?.tintColor = .white
-        cell.backgroundColor = greyColor
+//        cell.imageView?.tintColor = .white
+//        cell.backgroundColor = greyColor
         return cell
     }
     

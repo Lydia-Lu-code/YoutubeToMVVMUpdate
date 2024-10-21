@@ -109,7 +109,32 @@ class ContentTableViewControllerViewModel {
     }
 
     func configureHeaderView(_ headerView: ContentHeaderView, forSection section: Int) {
-        headerView.configure(leftTitle: titleForSection(section), rightTitle: section == 1 || section == 2 ? "查看全部" : "")
+        // 確保 section 索引在有效範圍內
+        guard section > 0 && section <= sections.count else {
+            headerView.configure(leftTitle: "", rightTitle: "")
+            return
+        }
+        
+        // 獲取 section 標題
+        let sectionTitle = sections[section - 1]
+        
+        // 決定是否顯示 "查看全部"
+        let rightTitle = (section == 1 || section == 2) ? "查看全部" : ""
+        
+        // 配置 header view
+        headerView.configure(leftTitle: sectionTitle, rightTitle: rightTitle)
+        
+        // 確保文字顏色設置正確
+//        headerView.setTextColor(.label)
     }
+    
+//    func configureHeaderView(_ headerView: ContentHeaderView, forSection section: Int) {
+//        
+//        let sectionTitle = sections[section - 1]  // 假設 sections 是從第二個 section 開始的
+//            headerView.configure(leftTitle: sectionTitle, rightTitle: "查看全部")
+//            
+//        
+////        headerView.configure(leftTitle: titleForSection(section), rightTitle: section == 1 || section == 2 ? "查看全部" : "")
+//    }
 }
 

@@ -17,7 +17,7 @@ class ConVideoFrameView: UIView {
     var conVideoImgView : UIImageView = {
         let vidView = UIImageView()
         vidView.translatesAutoresizingMaskIntoConstraints = false
-        vidView.backgroundColor = .lightGray
+//        vidView.backgroundColor = .lightGray
         vidView.contentMode = .scaleAspectFill // 將圖片的 contentMode 設置為 .scaleAspectFill，使圖片自動拉伸以填滿視圖
         vidView.clipsToBounds = true // 剪切超出視圖範圍的部分
         vidView.layer.cornerRadius = 15 // 设置圆角

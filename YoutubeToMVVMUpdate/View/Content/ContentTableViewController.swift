@@ -16,6 +16,7 @@ class ContentTableViewController: UITableViewController {
         setupViewModel()
         setupUI()
         loadVideos()
+        
     }
     
     // MARK: - Setup Methods
@@ -71,7 +72,7 @@ class ContentTableViewController: UITableViewController {
         if let tabBar = self.tabBarController?.tabBar {
             let tabBarAppearance = UITabBarAppearance()
             tabBarAppearance.configureWithOpaqueBackground()
-            tabBarAppearance.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
+//            tabBarAppearance.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .black : .white
             tabBar.standardAppearance = tabBarAppearance
             if #available(iOS 15.0, *) {
                 tabBar.scrollEdgeAppearance = tabBarAppearance
@@ -90,6 +91,8 @@ class ContentTableViewController: UITableViewController {
     }
     
     // MARK: - Table View Data Source
+    
+    
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections()

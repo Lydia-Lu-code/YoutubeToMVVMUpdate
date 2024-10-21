@@ -72,6 +72,7 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
         setupBindings()
         homeViewModel.loadVideos()
         updateShortsLabel()
+
         
         setupVideoTapGestures()
     }

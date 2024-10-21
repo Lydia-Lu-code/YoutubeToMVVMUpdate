@@ -49,9 +49,7 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Layout Constants
     
     private let fullViewHeight: CGFloat = UIScreen.main.bounds.height
-
     private let partialViewHeight: CGFloat = UIScreen.main.bounds.height - 64
-
     private var currentContainerHeight: CGFloat = UIScreen.main.bounds.height
     
     // MARK: - Initialization
@@ -85,7 +83,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Shorts"
         label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.textColor = .label
         return label
     }()
     
@@ -98,44 +95,74 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         stackView.alignment = .center
         stackView.addArrangedSubview(playerSymbolImageView)
         stackView.addArrangedSubview(shortsLbl)
-        stackView.backgroundColor = .systemBackground
         return stackView
     }()
 
     
-    
-    
-    // MARK: - Lifecycle Methods
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
         
-//        view.backgroundColor = .clear
-         
-         setupContainer()
-         setupPanGesture()
-         setupUI()
-//         setupTableView()
+        setupInitialAppearance()
+        
+        setupContainer()
+        setupPanGesture()
+        setupUI()
         
         setupPlayerView()
         setupTableView()
         setupShortsStackView()
         setupSubscribeHoriCollectionView()
         
-         loadVideoData()
-         fetchAdditionalData()
-         hideNavigationElements()
-         
-//         setupShortsViewModel()
+        loadVideoData()
+        fetchAdditionalData()
+        hideNavigationElements()
+        
         setupShortsViewModel {
             self.tableView.reloadData()
         }
         
         setupVideoViews()
         loadAdditionalVideos()
-   
     }
+    
+    private func setupInitialAppearance() {
+         let isDarkMode = traitCollection.userInterfaceStyle == .dark
+         
+         // 設置背景色
+         let backgroundColor: UIColor = isDarkMode ? .systemBackground : .systemBackground
+         view.backgroundColor = backgroundColor
+         
+         // 設置 TabBar
+         setupTabBar(isDarkMode: isDarkMode)
+     }
+     
+     private func setupTabBar(isDarkMode: Bool) {
+         guard let tabBar = tabBarController?.tabBar else { return }
+         
+         tabBar.isTranslucent = true
+         
+         if #available(iOS 15.0, *) {
+             let appearance = UITabBarAppearance()
+             appearance.configureWithDefaultBackground()
+             appearance.backgroundEffect = UIBlurEffect(style: isDarkMode ? .dark : .light)
+             
+             tabBar.standardAppearance = appearance
+             tabBar.scrollEdgeAppearance = appearance
+         } else {
+             tabBar.backgroundImage = UIImage()
+             tabBar.shadowImage = UIImage()
+             tabBar.backgroundColor = .clear
+             tabBar.barTintColor = isDarkMode ? .black : .white
+         }
+     }
+
+     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+         super.traitCollectionDidChange(previousTraitCollection)
+         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+             setupInitialAppearance()
+             tableView.reloadData()
+         }
+     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -147,10 +174,59 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        checkWhiteBackgroundViews(in: view)
-//    }
+    private func hideNavigationElements() {
+        // 隱藏導航欄
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        // 隱藏狀態欄
+        setNeedsStatusBarAppearanceUpdate()
+    }
+
+    // 覆蓋這個方法來控制狀態欄的可見性
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
+    private func setupNavigationBar() {
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        
+        navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationBar.shadowImage = UIImage()
+        navigationBar.isTranslucent = true
+        
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithDefaultBackground()
+            appearance.backgroundEffect = UIBlurEffect(style: .systemMaterial)
+            navigationBar.standardAppearance = appearance
+            navigationBar.scrollEdgeAppearance = appearance
+        }
+    }
+
+    private func setupTabBar() {
+         guard let tabBar = tabBarController?.tabBar else { return }
+         
+         tabBar.isTranslucent = true
+         
+         if #available(iOS 15.0, *) {
+             let appearance = UITabBarAppearance()
+             appearance.configureWithDefaultBackground()
+             appearance.backgroundEffect = UIBlurEffect(style: .systemMaterial)
+             
+             tabBar.standardAppearance = appearance
+             tabBar.scrollEdgeAppearance = appearance
+         } else {
+             tabBar.backgroundImage = UIImage()
+             tabBar.shadowImage = UIImage()
+             tabBar.backgroundColor = .clear
+             tabBar.barTintColor = .clear
+         }
+     }
+    
+    // 添加這個方法來設置狀態欄樣式
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default  // 使用默認樣式，會根據深淺模式自動調整
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -223,7 +299,7 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private func setupContainer() {
          containerView = UIView()
-         containerView.backgroundColor = .systemBackground
+//         containerView.backgroundColor = .systemBackground
          containerView.clipsToBounds = true
          view.addSubview(containerView)
          
@@ -297,17 +373,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         subscribeHoriCollectionView.reloadData()
     }
     
-//    private func checkWhiteBackgroundViews(in view: UIView) {
-//        if view.backgroundColor == .white {
-//            print("白色背景元件: \(type(of: view)), Frame: \(view.frame)")
-//        }
-//        
-//        for subview in view.subviews {
-//            checkWhiteBackgroundViews(in: subview)
-//        }
-//    }
-
-    
     
     // MARK: - Setup Methods
 
@@ -377,17 +442,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func updateVideoInfo() {
         tableView.reloadData()
     }
-    
-    private func hideNavigationElements() {
-        // 隱藏導航欄
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        // 隱藏狀態欄
-        setNeedsStatusBarAppearanceUpdate()
-        
-        // 設置預設的用戶界面風格
-        overrideUserInterfaceStyle = .dark  // 或 .light，取決於你想要的背景顏色
-    }
   
     private func setupShortsViewModel(completion: @escaping () -> Void) {
         shortsViewModel = ShortsViewModel()
@@ -396,7 +450,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self?.tableView.reloadData()
             }
         }
-//        shortsViewModel.loadShortsVideos()
         
         shortsViewModel.loadShortsVideos()
     }
@@ -404,17 +457,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func updateShortsLabel() -> String {
         return shortsViewModel.shortsTitle
     }
-
-//    private func updateShortsLabel() {
-//        shortsLbl.text = shortsViewModel.shortsTitle
-//    }
-    
-
-    // 覆蓋這個方法來控制狀態欄的可見性
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-
     
     // MARK: - Video Loading
     
@@ -638,11 +680,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
            ])
 
        }
-
-//    
-//    private func configureRelatedVideoCell(_ cell: PlayerTableViewCell) {
-//        // Configure related video cell
-//    }
     
     // MARK: - ButtonCollectionCellDelegate
     

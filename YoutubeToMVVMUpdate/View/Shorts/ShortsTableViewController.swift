@@ -4,6 +4,10 @@ class ShortsTableViewController: UITableViewController {
     
     private var viewModel: ShortsListViewModel!
     
+    private let cellHeight: CGFloat = UIScreen.main.bounds.height
+    private let bottomPadding: CGFloat = 25 // 為底部元素留出空間，避免被 tabbar 遮擋
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -32,6 +36,7 @@ class ShortsTableViewController: UITableViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.isPagingEnabled = true
         tableView.contentInsetAdjustmentBehavior = .never
+        tableView.rowHeight = cellHeight
     }
     
     private func setupNavigationBar() {
@@ -57,16 +62,32 @@ class ShortsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ShortsTableViewCell", for: indexPath) as! ShortsTableViewCell
-        if let cellViewModel = viewModel.cellViewModel(at: indexPath.row) {
-            cell.configure(with: cellViewModel)
-        }
-        return cell
+         let cell = tableView.dequeueReusableCell(withIdentifier: "ShortsTableViewCell", for: indexPath) as! ShortsTableViewCell
+         if let cellViewModel = viewModel.cellViewModel(at: indexPath.row) {
+             cell.configure(with: cellViewModel)
+             
+             // 調整 ShortsBtnView 和 ShortsEmojiBtnView 的位置
+             let bottomConstraintConstant = -(bottomPadding + (tabBarController?.tabBar.frame.height)! ?? 0)
+             cell.shortsBtnView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: bottomConstraintConstant).isActive = true
+             cell.shortEmojiBtnView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: bottomConstraintConstant).isActive = true
+         }
+         return cell
+     }
+    
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "ShortsTableViewCell", for: indexPath) as! ShortsTableViewCell
+//        if let cellViewModel = viewModel.cellViewModel(at: indexPath.row) {
+//            cell.configure(with: cellViewModel)
+//        }
+//        return cell
+//    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return cellHeight
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.bounds.height
-    }
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return tableView.bounds.height
+//    }
     
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let cellHeight = tableView.rowHeight

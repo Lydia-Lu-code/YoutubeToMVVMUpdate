@@ -41,7 +41,15 @@ struct ButtonItem {
     var actionType: ActionType {
         return item.actionType
     }
-
+    
+    func backgroundColor(for traitCollection: UITraitCollection) -> UIColor {
+         switch traitCollection.userInterfaceStyle {
+         case .dark:
+             return UIColor(white: 0.3, alpha: 1.0) // 深色模式下的背景顏色
+         default:
+             return UIColor.lightGray // 淺色模式下的背景顏色
+         }
+     }
 }
 
 

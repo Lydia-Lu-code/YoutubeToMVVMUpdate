@@ -29,8 +29,7 @@ extension APIError: LocalizedError {
 
 class APIService {
     
-//    private let apiKey = ""
-    private let apiKey = "AIzaSyCvZYsFx7oIjm2mBOhVCHLJjzoqFo8GzCU"
+    private let apiKey = "AIzaSyBZKww0PeqoAQ1Y8kPA7fMcOI76NxSBSZs"
     
     func fetchVideosHome(query: String, maxResults: Int, completion: @escaping (Result<[HomeVideoModel], APIError>) -> Void) {
         let baseURL = "https://www.googleapis.com/youtube/v3/search"

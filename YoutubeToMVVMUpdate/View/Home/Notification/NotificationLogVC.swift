@@ -98,11 +98,11 @@ class NotificationLogVC: UIViewController {
             let tabBarAppearance = UITabBarAppearance()
             tabBarAppearance.configureWithOpaqueBackground()
             
-            if traitCollection.userInterfaceStyle == .dark {
-                tabBarAppearance.backgroundColor = .black
-            } else {
-                tabBarAppearance.backgroundColor = .white
-            }
+//            if traitCollection.userInterfaceStyle == .dark {
+//                tabBarAppearance.backgroundColor = .black
+//            } else {
+//                tabBarAppearance.backgroundColor = .white
+//            }
             
             tabBar.standardAppearance = tabBarAppearance
             if #available(iOS 15.0, *) {
