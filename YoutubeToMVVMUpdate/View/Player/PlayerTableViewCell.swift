@@ -57,13 +57,13 @@ class PlayerTableViewCell: UITableViewCell {
             infoLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8)
         ])
     }
-
-    func configure(with viewModel: VideoViewModel) {
-        titleLabel.text = viewModel.title
-        infoLabel.text = "\(viewModel.channelTitle) • \(viewModel.viewCountText)次觀看"
+    
+    func configure(with cellViewModel: PlayerCellViewModel) {
+        titleLabel.text = cellViewModel.title
+        infoLabel.text = cellViewModel.infoText
         
-        if let url = URL(string: viewModel.thumbnailURL) {
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+        if let url = URL(string: cellViewModel.thumbnailURL) {
+            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
                 if let data = data, let image = UIImage(data: data) {
                     DispatchQueue.main.async {
                         self?.thumbnailImageView.image = image
@@ -72,6 +72,21 @@ class PlayerTableViewCell: UITableViewCell {
             }.resume()
         }
     }
+
+//    func configure(with viewModel: VideoViewModel) {
+//        titleLabel.text = viewModel.title
+//        infoLabel.text = "\(viewModel.channelTitle) • \(viewModel.viewCountText)次觀看"
+//        
+//        if let url = URL(string: viewModel.thumbnailURL) {
+//            URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+//                if let data = data, let image = UIImage(data: data) {
+//                    DispatchQueue.main.async {
+//                        self?.thumbnailImageView.image = image
+//                    }
+//                }
+//            }.resume()
+//        }
+//    }
     
 
 }

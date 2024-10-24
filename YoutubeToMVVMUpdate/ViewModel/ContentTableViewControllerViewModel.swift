@@ -19,14 +19,14 @@ class ContentTableViewControllerViewModel {
         
         // 載入播放清單
         group.enter()
-        loadVideosForSection(query: "T:Time", maxResults: 16) { [weak self] result in
+        loadVideosForSection(query: "日本美食推薦", maxResults: 16) { [weak self] result in
             self?.handleVideoResult(result, for: 1)
             group.leave()
         }
         
         // 載入你的影片
         group.enter()
-        loadVideosForSection(query: "TO DO ep.", maxResults: 16) { [weak self] result in
+        loadVideosForSection(query: "韓國美食推薦", maxResults: 16) { [weak self] result in
             self?.handleVideoResult(result, for: 2)
             group.leave()
         }
@@ -124,17 +124,8 @@ class ContentTableViewControllerViewModel {
         // 配置 header view
         headerView.configure(leftTitle: sectionTitle, rightTitle: rightTitle)
         
-        // 確保文字顏色設置正確
-//        headerView.setTextColor(.label)
     }
     
-//    func configureHeaderView(_ headerView: ContentHeaderView, forSection section: Int) {
-//        
-//        let sectionTitle = sections[section - 1]  // 假設 sections 是從第二個 section 開始的
-//            headerView.configure(leftTitle: sectionTitle, rightTitle: "查看全部")
-//            
-//        
-////        headerView.configure(leftTitle: titleForSection(section), rightTitle: section == 1 || section == 2 ? "查看全部" : "")
-//    }
+
 }
 

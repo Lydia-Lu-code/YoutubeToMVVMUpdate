@@ -21,13 +21,13 @@ class HomeViewModel {
     }
     
     private func loadShortsVideos() {
-        apiService.fetchVideosHome(query: "YEONJUN Shorts", maxResults: 4) { [weak self] result in
+        apiService.fetchVideosHome(query: "日本獨旅 Shorts", maxResults: 4) { [weak self] result in
             self?.handleResult(result, for: \.shortsVideos)
         }
     }
     
     private func loadSingleVideo() {
-        apiService.fetchVideosHome(query: "TXT TODO EP.", maxResults: 1) { [weak self] result in
+        apiService.fetchVideosHome(query: "日本旅遊Vlog", maxResults: 1) { [weak self] result in
             switch result {
             case .success(let videos):
                 if let firstVideo = videos.first {
@@ -40,7 +40,7 @@ class HomeViewModel {
     }
     
     private func loadOtherVideos() {
-        apiService.fetchVideosHome(query: "TXT T:Time", maxResults: 5) { [weak self] result in
+        apiService.fetchVideosHome(query: "日本獨旅Vlog", maxResults: 5) { [weak self] result in
             self?.handleResult(result, for: \.otherVideos)
         }
     }

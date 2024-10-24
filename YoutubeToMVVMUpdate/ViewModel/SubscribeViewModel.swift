@@ -21,7 +21,7 @@ class SubscribeViewModel {
     }
     
     private func loadShortsVideos() {
-        apiService.fetchVideosSubscribe(query: "K-pop Top 2024 Shorts", maxResults: 18) { [weak self] result in
+        apiService.fetchVideosSubscribe(query: "韓國獨旅 Shorts", maxResults: 18) { [weak self] result in
             switch result {
             case .success(let videos):
                 let viewModels = videos.map { VideoViewModel(videoModel: $0) }
@@ -33,7 +33,7 @@ class SubscribeViewModel {
     }
     
     private func loadSingleVideo() {
-        apiService.fetchVideosSubscribe(query: "kpop隨機舞蹈 2024", maxResults: 1) { [weak self] result in
+        apiService.fetchVideosSubscribe(query: "韓國旅遊Vlog", maxResults: 1) { [weak self] result in
             switch result {
             case .success(let videos):
                 if let firstVideo = videos.first {
@@ -46,7 +46,7 @@ class SubscribeViewModel {
     }
     
     private func loadOtherVideos() {
-        apiService.fetchVideosSubscribe(query: "dance mirror 2024", maxResults: 5) { [weak self] result in
+        apiService.fetchVideosSubscribe(query: "韓國獨旅Vlog", maxResults: 5) { [weak self] result in
             self?.handleResult(result, for: \.otherVideos)
         }
     }

@@ -1,24 +1,15 @@
+
 import UIKit
 import WebKit
 
 class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ButtonCollectionCellDelegate {
-    var buttonTitles: [String] = ["👍|👎", "分享", "Remix", "超級感謝", "下載", "剪輯片段", "儲存", "檢舉", ""]
     
     
     // MARK: - Properties
-    
-    private let videoViewModel: VideoViewModel
-    private let subscribeHoriCollectionView = SubscribeHoriCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var shortsViewModel: ShortsViewModel!
-    
-    private var videoViews: [VideoView] = []
-    private var searchKeywords: [String] = ["dance mirror 2024", "kpop random dance", "live performance", "music video", "behind the scenes"]
+    private let viewModel: PlayerViewModel
+    var buttonTitles = ["👍|👎", "分享", "Remix", "超級感謝", "下載", "剪輯片段", "儲存", "檢舉", ""]
 
-    
-    private let apiService: APIService
-    
     // MARK: - UI Components
-    
     private let playerView: WKWebView = {
         let configuration = WKWebViewConfiguration()
         let playerView = WKWebView(frame: .zero, configuration: configuration)
@@ -42,25 +33,21 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private var containerViewHeightConstraint: NSLayoutConstraint!
     private var containerViewBottomConstraint: NSLayoutConstraint!
     
-
     private var contentView: UIView! // 新增一個 contentView
     
     // MARK: - Layout Constants
-    
     private let fullViewHeight: CGFloat = UIScreen.main.bounds.height
     private let partialViewHeight: CGFloat = UIScreen.main.bounds.height - 64
     private var currentContainerHeight: CGFloat = UIScreen.main.bounds.height
     
-    // MARK: - Initialization
-    
-    init(videoViewModel: VideoViewModel, apiService: APIService = APIService()) {
-        self.videoViewModel = videoViewModel
-        self.apiService = apiService
+    // 修改初始化方法，使用 VideoViewModel 來創建 PlayerViewModel
+    init(videoViewModel: VideoViewModel) {
+        self.viewModel = PlayerViewModel(videoViewModel: videoViewModel)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -96,33 +83,48 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         stackView.addArrangedSubview(shortsLbl)
         return stackView
     }()
-
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupInitialAppearance()
-        
         setupContainer()
         setupPanGesture()
         setupUI()
+        setupBindings()
         
-        setupPlayerView()
-        setupTableView()
-        setupShortsStackView()
-        setupSubscribeHoriCollectionView()
-        
-        loadVideoData()
-        fetchAdditionalData()
+        viewModel.loadAllData()
         hideNavigationElements()
         
-        setupShortsViewModel {
-            self.tableView.reloadData()
+    }
+    
+    private func setupBindings() {
+//        
+//        viewModel.onRowUpdated = { [weak self] row in
+//            self?.tableView.reloadRows(at: [IndexPath(row: row, section: 0)],
+//                                       with: .automatic)
+//        }
+        
+        viewModel.onDataLoaded = { [weak self] in
+            DispatchQueue.main.async {
+                self?.updateVideoInfo()
+                self?.tableView.reloadData()
+            }
         }
         
-        setupVideoViews()
-        loadAdditionalVideos()
+        viewModel.onError = { [weak self] error in
+            DispatchQueue.main.async {
+                self?.showError(error)
+            }
+        }
     }
+    
+    private func updateVideoInfo() {
+        loadYouTubeVideo(videoID: viewModel.videoId)
+        tableView.reloadData()
+    }
+
     
     private func setupInitialAppearance() {
          let isDarkMode = traitCollection.userInterfaceStyle == .dark
@@ -162,7 +164,7 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
              tableView.reloadData()
          }
      }
-    
+     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -239,33 +241,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.frame.size.height = containerView.bounds.height - playerView.frame.maxY
     }
     
-    private func setupVideoViews() {
-        for _ in 0..<5 {
-            let videoView = VideoView()
-            videoView.translatesAutoresizingMaskIntoConstraints = false
-            videoViews.append(videoView)
-        }
-    }
-
-    private func loadAdditionalVideos() {
-        for (index, keyword) in searchKeywords.enumerated() {
-            apiService.fetchVideosSubscribe(query: keyword, maxResults: 1) { [weak self] result in
-                switch result {
-                case .success(let videos):
-                    if let video = videos.first {
-                        let viewModel = VideoViewModel(videoModel: video)
-                        DispatchQueue.main.async {
-                            self?.videoViews[index].viewModel = viewModel
-                            self?.tableView.reloadRows(at: [IndexPath(row: index + 5, section: 0)], with: .automatic)
-                        }
-                    }
-                case .failure(let error):
-                    print("Error loading video for keyword \(keyword): \(error)")
-                }
-            }
-        }
-    }
-
     
     private func setupPlayerView() {
          containerView.addSubview(playerView)
@@ -298,7 +273,6 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private func setupContainer() {
          containerView = UIView()
-//         containerView.backgroundColor = .systemBackground
          containerView.clipsToBounds = true
          view.addSubview(containerView)
          
@@ -321,6 +295,10 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
          setupTableView()
          setupShortsStackView()
          setupSubscribeHoriCollectionView()
+         
+         tableView.reloadData()
+         loadYouTubeVideo(videoID: viewModel.videoId)
+         
      }
 
 
@@ -336,42 +314,33 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     private func configureShortsCell(_ cell: PlayerTableViewCell) {
         cell.contentView.addSubview(shortsStackView)
-        cell.contentView.addSubview(subscribeHoriCollectionView)
+        cell.contentView.addSubview(viewModel.subscribeHoriCollectionView)
         
-        shortsLbl.text = updateShortsLabel()
-        
-        subscribeHoriCollectionView.videoViewModels = shortsViewModel.shortsVideos.value
+        shortsLbl.text = viewModel.shortsTitle
+        viewModel.subscribeHoriCollectionView.videoViewModels = viewModel.shortsVideos
         
         // 移除所有先前的約束
         shortsStackView.removeFromSuperview()
-        subscribeHoriCollectionView.removeFromSuperview()
+        viewModel.subscribeHoriCollectionView.removeFromSuperview()
         
         // 重新添加視圖
         cell.contentView.addSubview(shortsStackView)
-        cell.contentView.addSubview(subscribeHoriCollectionView)
-        
-        // 確保 translatesAutoresizingMaskIntoConstraints 設置為 false
-        shortsStackView.translatesAutoresizingMaskIntoConstraints = false
-        subscribeHoriCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.addSubview(viewModel.subscribeHoriCollectionView)
         
         NSLayoutConstraint.activate([
-            // shortsStackView 約束
             shortsStackView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
             shortsStackView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
             shortsStackView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
             shortsStackView.heightAnchor.constraint(equalToConstant: 60),
             
-            // subscribeHoriCollectionView 約束
-            subscribeHoriCollectionView.topAnchor.constraint(equalTo: shortsStackView.bottomAnchor),
-            subscribeHoriCollectionView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-            subscribeHoriCollectionView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-            subscribeHoriCollectionView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
+            viewModel.subscribeHoriCollectionView.topAnchor.constraint(equalTo: shortsStackView.bottomAnchor),
+            viewModel.subscribeHoriCollectionView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            viewModel.subscribeHoriCollectionView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+            viewModel.subscribeHoriCollectionView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
         ])
         
-        // 更新 subscribeHoriCollectionView 的數據
-        subscribeHoriCollectionView.reloadData()
+        viewModel.subscribeHoriCollectionView.reloadData()
     }
-    
     
     // MARK: - Setup Methods
 
@@ -418,48 +387,10 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    // MARK: - Data Loading Methods
-    
-    private func loadVideoData() {
-        loadYouTubeVideo(videoID: videoViewModel.videoID)
-        updateVideoInfo()
-    }
-    
-    private func fetchAdditionalData() {
-        videoViewModel.fetchDetailedInfo(apiService: apiService) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    self?.updateVideoInfo()
-                case .failure(let error):
-                    self?.showError(error.localizedDescription)
-                }
-            }
-        }
-    }
-    
-    private func updateVideoInfo() {
-        tableView.reloadData()
-    }
-  
-    private func setupShortsViewModel(completion: @escaping () -> Void) {
-        shortsViewModel = ShortsViewModel()
-        shortsViewModel.shortsVideos.bind { [weak self] _ in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
-        }
-        
-        shortsViewModel.loadShortsVideos()
-    }
 
-    private func updateShortsLabel() -> String {
-        return shortsViewModel.shortsTitle
-    }
-    
     // MARK: - Video Loading
     
-    func loadYouTubeVideo(videoID: String) {
+    private func loadYouTubeVideo(videoID: String) {
         let embedHTML = """
         <!DOCTYPE html>
         <html>
@@ -505,8 +436,12 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - UITableViewDataSource & UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5 + videoViews.count
+        return viewModel.numberOfRows
     }
+    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 5 + videoViews.count
+//    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerTableViewCell", for: indexPath) as! PlayerTableViewCell
@@ -525,17 +460,12 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case 4:
             configureShortsCell(cell)
         default:
-            let videoViewIndex = indexPath.row - 5
-            if videoViewIndex < videoViews.count {
-                let videoView = videoViews[videoViewIndex]
+            if let videoView = viewModel.videoView(at: indexPath.row - 5) {
+//                configureVideoViewCell(cell, with: videoView)
                 cell.contentView.addSubview(videoView)
-                NSLayoutConstraint.activate([
-                    videoView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-                    videoView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-                    videoView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-                    videoView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
-                ])
+                setupVideoViewConstraints(videoView, in: cell)
             }
+            
         }
         
         return cell
@@ -556,14 +486,23 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     // MARK: - Cell Configuration Methods
     
+    private func setupVideoViewConstraints(_ videoView: VideoView, in cell: UITableViewCell) {
+        NSLayoutConstraint.activate([
+            videoView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            videoView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            videoView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+            videoView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
+        ])
+    }
+    
     private func configureVideoInfoCell(_ cell: PlayerTableViewCell) {
            let titleLabel = UILabel()
-           titleLabel.text = videoViewModel.title
+           titleLabel.text = viewModel.videoTitle
            titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
            titleLabel.numberOfLines = 2
            
            let infoLabel = UILabel()
-        infoLabel.text = "\(videoViewModel.viewCountText)次觀看 · \(videoViewModel.daysSinceUpload ?? "")"
+            infoLabel.text = viewModel.videoInfoText
            infoLabel.font = UIFont.systemFont(ofSize: 14)
            infoLabel.textColor = .gray
            
@@ -586,11 +525,9 @@ class PlayerViewController: UIViewController, UITableViewDelegate, UITableViewDa
        }
     
     private func configureChannelInfoCell(_ cell: PlayerTableViewCell) {
-        let channelTitle = videoViewModel.channelTitle
-        print("PVC channelTitle == \(channelTitle)")
         
         let titleLabel = UILabel()
-        titleLabel.text = channelTitle
+        titleLabel.text = viewModel.channelTitle
         titleLabel.font = UIFont.systemFont(ofSize: 12)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         cell.contentView.addSubview(titleLabel)

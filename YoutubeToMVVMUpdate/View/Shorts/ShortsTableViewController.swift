@@ -27,7 +27,7 @@ class ShortsTableViewController: UITableViewController {
                 self?.showError(errorMessage)
             }
         }
-        viewModel.loadVideos(query: "IVE, (G)I-DLE, aespa, TWICE, LE SSERAFIM, NewJeans, shorts", maxResults: 20)
+        viewModel.loadVideos(query: "日 韓 必喝 必吃 TOP Shorts", maxResults: 20)
     }
     
     private func setupTableView() {

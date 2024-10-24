@@ -308,9 +308,9 @@ class HomeViewController: UIViewController, ButtonCollectionCellDelegate, UIScro
             }
         }
     }
-
-    private func navigateToPlayerViewController(with video: VideoViewModel) {
-        let playerVC = PlayerViewController(videoViewModel: video)
+    
+    private func navigateToPlayerViewController(with videoViewModel: VideoViewModel) {
+        let playerVC = PlayerViewController(videoViewModel: videoViewModel)
         navigationController?.pushViewController(playerVC, animated: true)
     }
     
